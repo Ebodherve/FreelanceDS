@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/pages/dashboard.dart';
 
 class ConnexionPage extends StatefulWidget {
   @override
@@ -97,9 +98,15 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                         // color: const Color(0xff449b76),
                         color: Color.fromARGB(255, 3, 196, 9),
                         onPressed: () {
-                          register();
+                          //register();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DashboardPage()));
                         },
-                        child: isLoading
+                        child: Text("Connexion",
+                            style: TextStyle(color: Colors.white)),
+                        /*child: isLoading
                             ? const SizedBox(
                                 width: 20.0,
                                 height: 20.0,
@@ -107,7 +114,7 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                                   strokeWidth: 2.0,
                                 ))
                             : const Text("Connexion",
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.white)),*/
                       ),
                     ),
                   ],
@@ -180,7 +187,7 @@ abstract class RegisterAuth {
 
   bool isLoading = false;
 
-  Future register();
+  //Future register();
 }
 
 class InputValidator {
