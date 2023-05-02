@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/api_rest/inscription_rest.dart';
+import 'package:front/pages/dashboard.dart';
 
 class InscriptionionPage extends StatefulWidget {
   @override
@@ -7,6 +9,14 @@ class InscriptionionPage extends StatefulWidget {
 
 class _InscriptionionPageState extends State<InscriptionionPage>
     with RegisterAuth {
+  static String? passwordText_;
+
+  static String? emailText_;
+
+  static String? loginText_;
+
+  static String? name_;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,18 +65,30 @@ class _InscriptionionPageState extends State<InscriptionionPage>
                           TextFormField(
                             decoration: buildInputDecoration("Nom"),
                             validator: InputValidator.emptyCheck(
-                              "Full name can't be empty",
+                              "Renseignez completement votre nom",
                             ),
+                            onChanged: (t) {
+                              name_ = t;
+                            },
                           ),
                           const SizedBox(height: 15.0),
                           TextFormField(
                             decoration: buildInputDecoration("Email"),
                             validator: InputValidator.email,
+                            onChanged: (t) {
+                              InputValidator.emailText = t;
+                              emailText_ = t;
+                            },
                           ),
                           const SizedBox(height: 15.0),
                           TextFormField(
                             decoration: buildInputDecoration("Login"),
-                            validator: InputValidator.email,
+                            validator: InputValidator.login(
+                                "Renseignez completement votre login"),
+                            onChanged: (t) {
+                              InputValidator.loginText = t;
+                              loginText_ = t;
+                            },
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -77,6 +99,7 @@ class _InscriptionionPageState extends State<InscriptionionPage>
                               validator: InputValidator.password,
                               onChanged: (t) {
                                 InputValidator.passwordText = t;
+                                passwordText_ = t;
                               },
                             ),
                           ),
@@ -183,6 +206,21 @@ class _InscriptionionPageState extends State<InscriptionionPage>
 
       if (rememberMe) {
         debugPrint("saved");
+        debugPrint(name_);
+        debugPrint(emailText_);
+        debugPrint(loginText_);
+        debugPrint(passwordText_);
+
+        AdCardExpertInscription data = AdCardExpertInscription(
+            nom: name_,
+            login: loginText_,
+            email: emailText_,
+            password: passwordText_);
+        InscriptionUser.SendExpertRest(data).then((value) {
+          if (value)
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DashboardPage()));
+        });
       }
 
       await Future.delayed(const Duration(seconds: 1));
@@ -215,9 +253,19 @@ class InputValidator {
 
   static String? emailText;
 
+  static String? loginText;
+
   static String? name;
 
   static emptyCheck(String msg) {
+    return (t) {
+      if (t.isEmpty || t == null) return msg;
+
+      return null;
+    };
+  }
+
+  static login(String msg) {
     return (t) {
       if (t.isEmpty || t == null) return msg;
 
