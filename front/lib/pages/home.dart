@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:front/pages/connexion.dart';
 import 'package:front/pages/inscription.dart';
+import 'package:front/api_rest/load_data_rest.dart';
 
 class FreelanceApp extends StatelessWidget {
   const FreelanceApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //Chargement des competences disponibles
+    LoadDataSiteRequest.LoadCompetences();
+
     return MaterialApp(
       title: 'Freelance',
       theme: ThemeData(

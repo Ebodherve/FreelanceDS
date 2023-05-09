@@ -13,7 +13,7 @@ class UtilisateurSerializer(ModelSerializer):
 class CompetencesSerializer(ModelSerializer):
     class Meta:
         model = Competences
-        fields = ('competence',)
+        fields = ('id', 'competence',)
 
 
 class ExpertSerializer(ModelSerializer):

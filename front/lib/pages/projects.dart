@@ -27,12 +27,10 @@ class _ProjectsPage extends State<ProjectsPage> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: ListView.builder(
-            //itemCount: listProjectsSimple.length,
             itemCount: widget.data.length,
             itemBuilder: ((context, index) {
               return Container(
                 child: ProjectsCardWidget(dataObject: widget.data[index]),
-                //child: listProjectsSimple[index],
               );
             }),
           ),
