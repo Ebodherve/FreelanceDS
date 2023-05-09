@@ -19,7 +19,8 @@ class CompetencesSerializer(ModelSerializer):
 class ExpertSerializer(ModelSerializer):
     class Meta:
         model = Expert
-        fields = ('CNI','Nom','Prenom','Description','Photo_profil','CV','Telephone','date_naissance','competence','password')
+        #fields = ('CNI','Nom','Prenom','Description','Photo_profil','CV','Telephone','date_naissance','competence','password')
+        fields = "__all__"
 
 
 class EntrepriseSerializer(ModelSerializer):
@@ -31,11 +32,11 @@ class EntrepriseSerializer(ModelSerializer):
 class ProjetSerializer(ModelSerializer):
     class Meta:
         model = Projet
-        fields = ('Nom','CNI_resp','Description')
+        fields = ('id', 'Nom','CNI_resp','Description')
 
 
 class PostulerSerializer(ModelSerializer):
     class Meta:
         model = Postuler
-        fields = ('Num','CNI')
+        fields = ('id','Num','CNI')
 

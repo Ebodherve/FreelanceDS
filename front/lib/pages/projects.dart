@@ -2,19 +2,29 @@ import 'package:flutter/material.dart';
 
 import 'package:front/widgets/navbar_widgets.dart';
 import 'package:front/widgets/card_widgets.dart';
+import 'package:front/api_rest/projects_rest.dart';
 
 class ProjectsPage extends StatefulWidget {
+  final data;
+  const ProjectsPage({
+    super.key,
+    required List this.data,
+  });
+
   @override
   _ProjectsPage createState() => _ProjectsPage();
 }
 
 class _ProjectsPage extends State<ProjectsPage> {
-  /*List<Widget> listProjects = [
+  List<Widget> listProjectsSimple = [
     ProjectsCardWidgetSimple(),
     ProjectsCardWidgetSimple(),
     ProjectsCardWidgetSimple(),
     ProjectsCardWidgetSimple(),
-  ];*/
+    ProjectsCardWidgetSimple(),
+    ProjectsCardWidgetSimple(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,24 +33,16 @@ class _ProjectsPage extends State<ProjectsPage> {
       ),
       backgroundColor: const Color(0xffffffff),
       body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            ProjectsCardWidgetSimple(),
-            ProjectsCardWidgetSimple(),
-            ProjectsCardWidgetSimple(),
-            ProjectsCardWidgetSimple(),
-            /*
-            ListView.builder(
-              itemCount: 4,
-              itemBuilder: ((context, index) {
-                return Container(
-                  child: listExperts[index],
-                );
-              }),
-            ),*/
-          ],
-        )),
+        child: ListView.builder(
+          //itemCount: listProjectsSimple.length,
+          itemCount: widget.data.length,
+          itemBuilder: ((context, index) {
+            return Container(
+              child: ProjectsCardWidget(dataObject: widget.data[index]),
+              //child: listProjectsSimple[index],
+            );
+          }),
+        ),
       ),
     );
   }

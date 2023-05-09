@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/pages/dashboard.dart';
+import 'package:front/api_rest/connexion_rest.dart';
 
 class ConnexionPage extends StatefulWidget {
   @override
@@ -7,6 +8,9 @@ class ConnexionPage extends StatefulWidget {
 }
 
 class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
+  String NameText = "";
+  String EmailText = "";
+  String PasswordText = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +57,20 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                                   Theme.of(context).textTheme.headlineMedium),
                           const SizedBox(height: 15.0),
                           TextFormField(
-                            decoration: buildInputDecoration("Login"),
-                            validator: InputValidator.email,
+                            decoration: buildInputDecoration("Username"),
+                            validator: InputValidator.emptyCheck(
+                                "Veuillez renseigner complètement votre nom"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextFormField(
+                              decoration: buildInputDecoration("Email"),
+                              validator: InputValidator.email,
+                              onChanged: (t) {
+                                InputValidator.emailText = t;
+                                EmailText = t;
+                              },
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -65,6 +81,7 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                               validator: InputValidator.password,
                               onChanged: (t) {
                                 InputValidator.passwordText = t;
+                                PasswordText = t;
                               },
                             ),
                           ),
@@ -98,7 +115,7 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                         // color: const Color(0xff449b76),
                         color: Color.fromARGB(255, 3, 196, 9),
                         onPressed: () {
-                          //register();
+                          register();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -168,6 +185,8 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
       }
 
       await Future.delayed(const Duration(seconds: 1));
+      ConnexionUser.ConnectExpertRest(
+          username: NameText, email: EmailText, password: PasswordText);
 
       setState(() {
         isLoading = false;

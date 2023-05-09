@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-/*
-import 'package:front/widgets/navbar_widgets.dart';
-import 'package:front/widgets/navbar_widgets.dart';
-import 'package:front/widgets/navbar_widgets.dart';
-*/
 import 'package:front/pages/experts.dart';
 import 'package:front/pages/projects.dart';
 import 'package:front/pages/enterprises.dart';
+import 'package:front/widgets/card_widgets.dart';
 import 'package:front/widgets/navbar_widgets.dart';
+import 'package:front/api_rest/projects_rest.dart';
+import 'package:front/api_rest/experts_rest.dart';
 
 class DrawerNavWidget extends StatefulWidget {
   @override
@@ -16,6 +14,44 @@ class DrawerNavWidget extends StatefulWidget {
 }
 
 class _DrawerNavWidget extends State<DrawerNavWidget> {
+  List<dynamic> listProjects = [];
+  List<dynamic> listExperts = [];
+
+  @override
+  getProjectsFromApi() {
+    listProjects.clear();
+    setState(() {
+      ProjectsRequest.GetAllProjects().then((value) {
+        listProjects = value;
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProjectsPage(
+                      data: listProjects,
+                    )));
+      });
+    });
+  }
+
+  @override
+  getExpertsFromApi() {
+    listExperts.clear();
+
+    setState(() {
+      ExpertsRequest.GetAllExperts().then((value) {
+        listExperts = value;
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExpertsPage(
+                      data: listExperts,
+                    )));
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,14 +68,12 @@ class _DrawerNavWidget extends State<DrawerNavWidget> {
             title: Text("ENTREPRISES")),
         ListTile(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ExpertsPage()));
+              getExpertsFromApi();
             },
             title: Text("EXPERTS")),
         ListTile(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProjectsPage()));
+              getProjectsFromApi();
             },
             title: Text("PROJETS")),
       ]),

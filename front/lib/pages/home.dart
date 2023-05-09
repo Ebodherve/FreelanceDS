@@ -48,7 +48,7 @@ class _HomePage extends State<HomePage> {
                   backgroundImage: AssetImage("images/im1.jpg"),
                   radius: 200,
                 )*/
-                  child: Container(child: Image.asset("assets/images/im1.png")),
+                  child: Container(child: Image.asset("assets/images/i2.png")),
                 ),
               ),
             ),

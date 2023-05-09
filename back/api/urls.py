@@ -13,6 +13,9 @@ router.register('Projet', ProjetViewSet, basename='Projet')
 router.register('Postuler', PostulerViewSet, basename='Postuler')
 
 
-urlpatterns = []
+urlpatterns = [
+    path('freelance_auth/', include('dj_rest_auth.urls')),
+    path('freelance_auth/registration/', include('dj_rest_auth.registration.urls')),
+]
 
 urlpatterns += router.urls

@@ -1,0 +1,5 @@
+django
+rest_framework
+drf_yasg
+dj-rest-auth
+

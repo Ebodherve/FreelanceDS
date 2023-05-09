@@ -26,30 +26,35 @@ class AdCardDataExpert {
     this.login = '',
     this.password = '',
     this.price_per_hour = '',
-    this.nb_etoile = 0,
+    this.nb_etoile = 6,
     this.nb_skills = 0,
     this.skills = const [],
   });
 
-  factory AdCardDataExpert.fromJson(Map<String, dynamic> json, stype) {
+  factory AdCardDataExpert.fromJson(Map<String, dynamic> json) {
     //final formatCurrency = NumberFormat.simpleCurrency(locale: 'fr_FR');
 
-    var skill_liste = jsonDecode(json['SKILLS'] ?? '[]');
+    /*var skill_liste = jsonDecode(json['competence'] ?? '[]');
 
     skill_liste = skill_liste.map<String>((image) {
       return image.toString();
-    }).toList();
+    }).toList();*/
 
     return AdCardDataExpert(
-        id: int.parse(json['ID']),
-        description: json['DESCRIPTION'] ?? '',
-        titre: json['titre'] ?? '',
-        nom: json['NOM'] ?? '',
-        price_per_hour: json['PRICE_PER_HOUR'] ?? '',
-        image: json['IMAGE'],
-        nb_skills: int.parse(json['NB_SKILLS']),
-        nb_etoile: int.parse(json['NB_ETOILE']),
-        skills: skill_liste.isEmpty ? [json['SKILLS'] ?? ''] : skill_liste);
+      id: int.parse(json['CNI']),
+      //id: json['CNI'],
+      //id: 1,
+      description: json['Description'] ?? '',
+      titre: json['titre'] ?? '',
+      nom: json['Nom'] ?? '',
+      price_per_hour: json['PRICE_PER_HOUR'] ?? '',
+      image: json['IMAGE'],
+      /*nb_skills: json['NB_SKILLS'] ? int.parse(json['NB_SKILLS']) : 0,
+        nb_etoile: json['NB_ETOILE'] ? int.parse(json['NB_ETOILE']) : 0,
+        nb_skills: int.parse(json['NB_SKILLS']) ?? 0,
+        nb_etoile: int.parse(json['NB_ETOILE']) ?? 0,
+        skills: skill_liste.isEmpty ? [json['competence'] ?? ''] : skill_liste,*/
+    );
   }
 
   @override
@@ -126,11 +131,14 @@ class _ExpertsCardWidget extends State<ExpertsCardWidget> {
                           height: 10,
                         ),
                         Text(widget.dataObject.description),
-                        ListView.builder(
-                            itemCount: widget.dataObject.nb_skills,
-                            itemBuilder: (context, index) => ListTile(
-                                  title: Text(widget.dataObject.skills[index]),
-                                )),
+                        Row(
+                          children: List.generate(
+                            widget.dataObject.nb_skills,
+                            (index) => ListTile(
+                              title: Text(widget.dataObject.skills[index]),
+                            ),
+                          ).toList().cast<Widget>(),
+                        ),
                       ]),
                 ),
               ],
@@ -138,6 +146,9 @@ class _ExpertsCardWidget extends State<ExpertsCardWidget> {
           ),
         ),
       ),
+      onTap: () {
+        print("Expert");
+      },
     );
   }
 }
@@ -373,11 +384,12 @@ class AdCardDataProject {
     this.price_max = '',
   });
 
-  factory AdCardDataProject.fromJson(Map<String, dynamic> json, stype) {
+  factory AdCardDataProject.fromJson(Map<String, dynamic> json) {
     return AdCardDataProject(
-      id: int.parse(json['ID']),
-      description: json['DESCRIPTION'] ?? '',
-      titre: json['titre'] ?? '',
+      id: json['id'],
+      //id: int.parse(json['id']),
+      description: json['Description'] ?? '',
+      titre: json['Nom'] ?? '',
       price_min: json['PRICE_MIN'] ?? '',
       price_max: json['PRICE_MAX'] ?? '',
     );
