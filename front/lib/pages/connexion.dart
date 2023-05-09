@@ -60,6 +60,10 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                             decoration: buildInputDecoration("Username"),
                             validator: InputValidator.emptyCheck(
                                 "Veuillez renseigner complètement votre nom"),
+                            onChanged: (t) {
+                              InputValidator.name = t;
+                              NameText = t;
+                            },
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -78,7 +82,8 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                               obscureText: visiblePassword,
                               decoration:
                                   buildInputDecoration("Password", true),
-                              validator: InputValidator.password,
+                              validator: InputValidator.emptyCheck(
+                                  "Veuillez rensigner le mot de passe "),
                               onChanged: (t) {
                                 InputValidator.passwordText = t;
                                 PasswordText = t;
@@ -116,10 +121,10 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                         color: Color.fromARGB(255, 3, 196, 9),
                         onPressed: () {
                           register();
-                          Navigator.push(
+                          /*Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DashboardPage()));
+                                  builder: (context) => DashboardPage()));*/
                         },
                         child: Text("Connexion",
                             style: TextStyle(color: Colors.white)),
@@ -185,11 +190,16 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
       }
 
       await Future.delayed(const Duration(seconds: 1));
-      ConnexionUser.ConnectExpertRest(
-          username: NameText, email: EmailText, password: PasswordText);
 
       setState(() {
         isLoading = false;
+        ConnexionUser.ConnectExpertRest(
+                username: NameText, email: EmailText, password: PasswordText)
+            .then((value) {
+          if (value)
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DashboardPage()));
+        });
       });
     }
 

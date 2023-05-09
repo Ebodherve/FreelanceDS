@@ -1,5 +1,7 @@
 django
-rest_framework
+djangorestframework
 drf_yasg
+django-allauth
 dj-rest-auth
+
 

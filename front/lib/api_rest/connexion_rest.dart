@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/constants.dart';
 import 'package:http/http.dart' as http;
 
 class ConnexionUser {
   static Future<bool> ConnectExpertRest({username, email, password}) async {
     String base_url = "http://127.0.0.1:8000/api/";
     String url = base_url + 'freelance_auth/login/';
-    //http.Response response = await http.get(Uri.encodeFull(url));
-    //http.Response response = await http.get(Uri.parse(Uri.encodeFull(url)));
-    print(url);
-    print("---------------------------------------------");
 
     final response = await http.post(
       Uri.parse(url),
@@ -20,19 +17,13 @@ class ConnexionUser {
       body: jsonEncode(<String, dynamic>{
         "password": password,
         "username": username,
-        // "username": data.nom,
-        // "Login": data.login,
         "email": email,
       }),
     );
-    print(response.body);
-    print("--------------------------------------");
-    print(response.statusCode);
-    print("--------------------------------------");
 
-    if (response.statusCode == 201) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
+    if (response.statusCode == 200) {
+      Map data = jsonDecode(response.body);
+      thoken_authentification = data["key"];
 
       return true;
     } else {

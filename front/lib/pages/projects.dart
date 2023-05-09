@@ -16,15 +16,6 @@ class ProjectsPage extends StatefulWidget {
 }
 
 class _ProjectsPage extends State<ProjectsPage> {
-  List<Widget> listProjectsSimple = [
-    ProjectsCardWidgetSimple(),
-    ProjectsCardWidgetSimple(),
-    ProjectsCardWidgetSimple(),
-    ProjectsCardWidgetSimple(),
-    ProjectsCardWidgetSimple(),
-    ProjectsCardWidgetSimple(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,15 +24,18 @@ class _ProjectsPage extends State<ProjectsPage> {
       ),
       backgroundColor: const Color(0xffffffff),
       body: SafeArea(
-        child: ListView.builder(
-          //itemCount: listProjectsSimple.length,
-          itemCount: widget.data.length,
-          itemBuilder: ((context, index) {
-            return Container(
-              child: ProjectsCardWidget(dataObject: widget.data[index]),
-              //child: listProjectsSimple[index],
-            );
-          }),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+            //itemCount: listProjectsSimple.length,
+            itemCount: widget.data.length,
+            itemBuilder: ((context, index) {
+              return Container(
+                child: ProjectsCardWidget(dataObject: widget.data[index]),
+                //child: listProjectsSimple[index],
+              );
+            }),
+          ),
         ),
       ),
     );
