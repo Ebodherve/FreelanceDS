@@ -41,6 +41,7 @@ class _DrawerNavWidget extends State<DrawerNavWidget> {
     setState(() {
       ExpertsRequest.GetAllExperts().then((value) {
         listExperts = value;
+        print(listExperts);
 
         Navigator.push(
             context,
@@ -49,6 +50,12 @@ class _DrawerNavWidget extends State<DrawerNavWidget> {
                       data: listExperts,
                     )));
       });
+      /*Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ExpertsPage(
+                    data: listExperts,
+                  )));*/
     });
   }
 

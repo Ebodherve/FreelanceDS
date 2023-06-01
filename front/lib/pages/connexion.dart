@@ -65,6 +65,7 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                               NameText = t;
                             },
                           ),
+                          /*
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
@@ -76,6 +77,7 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
                               },
                             ),
                           ),
+                          */
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
@@ -194,11 +196,13 @@ class _ConnexionPageState extends State<ConnexionPage> with RegisterAuth {
       setState(() {
         isLoading = false;
         ConnexionUser.ConnectExpertRest(
-                username: NameText, email: EmailText, password: PasswordText)
+                username: NameText, password: PasswordText)
             .then((value) {
-          if (value)
+          if (value) {
+            print("--------------------------------");
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DashboardPage()));
+          }
         });
       });
     }

@@ -2,69 +2,90 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class Utilisateur(models.Model):
-    password = models.CharField(max_length=200, primary_key=True)
-    Nom = models.CharField(max_length=200)
-    Email = models.EmailField(max_length=200)
-    Login = models.CharField(max_length=100, default="blanche")
-   
-    class Meta:
-        db_table='"Utilisateur"'
-        verbose_name = ("Utilisateur")
-        verbose_name_plural = ("Utilisateurs")
-        #unique_together = ("niveau", "filiere")
-
-
+class Domaine(models.Model):
+    
+    nom = models.CharField(max_length=255)
+    
     def __str__(self):
-         return f"{self.Nom}"
+        return str(self.id) + self.nom
+    
 
-
-class Competences(models.Model):
-    competence = models.CharField(max_length=200)
-
-    class Meta:
-        db_table='"Competence"'
-        verbose_name = ("Competence")
-        verbose_name_plural = ("Competences")
-
+class Competence(models.Model):
+    
+    nom = models.CharField(max_length=255)
+    domaine = models.ForeignKey(Domaine, on_delete=models.CASCADE, related_name="domaine")
+    
     def __str__(self):
-         return f"{self.competence}"
-   
+        return str(self.id) + self.nom
 
-class Expert(models.Model):
-    CNI = models.CharField(max_length=200, primary_key=True)
-    Nom = models.CharField(max_length=200)
-    Prenom = models.CharField(max_length=200)
-    Description = models.TextField(max_length=200)
-    Photo_profil = models.ImageField
-    CV = models.ImageField
-    Telephone = models.CharField(max_length=200)
-    date_naissance = models.DateField
-    competence = models.ManyToManyField("Competences",related_name='skils')
-    password = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
 
-class Entreprise(models.Model):
-    CNI_resp = models.CharField(max_length=200, primary_key=True)
-    Nom = models.CharField(max_length=200)
-    Description = models.TextField(max_length=200)
-    Photo_profil = models.ImageField
-    Telephone = models.CharField(max_length=200)
-    password = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
-
+class Profile(models.Model):
+    
+    #image = models.ImageField(upload_to="/photos_profiles/", null=True)
+    image = models.ImageField(upload_to="photos_profiles/", null=True, default="")
+    titre = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=3000, blank=True)
+    nb_etoiles = models.IntegerField()
+    prix_par_heure = models.IntegerField()
+    competences = models.ManyToManyField(Competence, related_name="competences", blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     def __str__(self):
-         return f"{self.Nom}"
+        return str(self.id) + self.titre
 
-class Projet(models.Model):
-    Nom = models.CharField(max_length=200)
-    Description = models.TextField(max_length=200)
-    CNI_resp = models.ForeignKey(Entreprise, on_delete=models.CASCADE)
 
+class ProfileEntreprise(models.Model):
+    
+    #image = models.ImageField(upload_to="/photos_profiles/")
+    image = models.ImageField(upload_to="photos_profiles/", default="", null=True)
+    nom = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=1000, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
+    
     def __str__(self):
-         return f"{self.Nom}"
+        return str(self.id) + self.nom
+    
+
+class UniteDevise(models.Model):
+    nom = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return str(self.id) + self.nom
 
 
-class Postuler(models.Model):
-    Num = models.ForeignKey(Projet, on_delete=models.CASCADE)
-    CNI = models.ForeignKey(Expert, on_delete=models.CASCADE)
+class Project(models.Model):
+    titre = models.CharField(max_length=255)
+    description = models.CharField(max_length=1000)
+    min_prix = models.IntegerField()
+    max_prix = models.IntegerField()
+    devise = models.ForeignKey(UniteDevise, on_delete=models.CASCADE, default=True, related_name="devise")
+    createur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="createur")
+    travailleurs = models.ManyToManyField(User, related_name="travailleurs", default=True, blank=True)
+    fini = models.CharField(max_length=255, choices=[("fini","fini"), ("non fini", "non fini")], default=True)
+    
+    def __str__(self):
+        return str(self.id) + self.titre
+
+
+class Postulat(models.Model):
+    text = models.CharField(max_length=2000)
+    somme_demande = models.IntegerField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.id) + self.text
+
+
+class Commentaire(models.Model):
+    text = models.CharField(max_length=2000)
+    emetteur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="emetteur")
+    destinataire = models.ForeignKey(User, on_delete=models.CASCADE, related_name="destinataire")
+    
+    def __str__(self):
+        return str(self.id) + self.text
+
+

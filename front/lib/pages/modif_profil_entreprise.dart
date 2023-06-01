@@ -1,0 +1,177 @@
+import 'package:flutter/material.dart';
+import 'package:front/api_rest/profil_rest.dart';
+import 'package:front/pages/dashboard.dart';
+import 'package:front/widgets/card_widgets.dart';
+import 'package:front/constants.dart';
+
+class ModifProfilEPage extends StatefulWidget {
+  //final expert;
+  ModifProfilEPage({
+    super.key,
+    required this.entreprise,
+  });
+
+  AdCardDataEnterprise entreprise;
+
+  @override
+  _ModifProfilEPage createState() => _ModifProfilEPage();
+}
+
+class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
+  static String nom_ = '';
+
+  static String description_ = '';
+
+  String imagePorf = "";
+
+  @override
+  Widget build(BuildContext context) {
+    imagePorf =
+        widget.entreprise.image == null ? "" : "${widget.entreprise.image}";
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 3, 196, 9),
+      ),
+      backgroundColor: const Color(0xffffffff),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: const Color(0xfffcfcfb),
+                height: 60.0,
+                alignment: Alignment.center,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Placeholder(
+                    fallbackHeight: MediaQuery.of(context).size.height * 0.2,
+                    child: widget.entreprise.image != ""
+                        ? Image.network('${widget.entreprise.image}')
+                        : Image.asset(
+                            "assets/images/default_profile.png",
+                          ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  MaterialButton(
+                    onPressed: () {},
+                    child: Text("Logo"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]),
+              ),
+              SizedBox(
+                height: 100,
+              ),
+              Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 25.0),
+                          TextFormField(
+                            initialValue: widget.entreprise.nom,
+                            decoration: buildInputDecoration("Nom"),
+                            validator: null,
+                            onChanged: (t) {
+                              nom_ = t;
+                            },
+                          ),
+                          const SizedBox(height: 15.0),
+                          TextFormField(
+                            initialValue: widget.entreprise.description,
+                            decoration: buildInputDecoration("Description"),
+                            validator: null,
+                            onChanged: (t) {
+                              ;
+                              description_ = t;
+                            },
+                          ),
+                          const SizedBox(height: 15.0),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      child: MaterialButton(
+                        height: 40.0,
+                        minWidth: MediaQuery.of(context).size.width,
+                        // color: const Color(0xff449b76),
+                        color: Color.fromARGB(255, 3, 196, 9),
+                        onPressed: () {
+                          register();
+                        },
+                        child: const Text("Mettre à jour",
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  InputDecoration buildInputDecoration(hintText, [eyeVisible = false]) {
+    var outlineInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+    );
+
+    return InputDecoration(
+      hintText: hintText,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+      border: outlineInputBorder,
+      enabledBorder: outlineInputBorder,
+      focusedBorder: outlineInputBorder,
+    );
+  }
+
+  @override
+  Future register() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+
+      //if (rememberMe) {
+      if (true) {
+        //debugPrint(nom_);
+
+        AdCardDataEnterprise data = AdCardDataEnterprise(
+          id: USER_PROFILE_ID,
+          nom: nom_,
+          description: description_,
+        );
+        print("-----------------------");
+        print("Request");
+        print("-----------------------");
+        ProfilRequest.UpdateEntrepriseProfil(
+            entreprise: data, profileid: USER_PROFILE_ENTREPRISE_ID);
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+
+      setState(() {});
+    }
+
+    return null;
+  }
+}
+
+abstract class RegisterAuth {
+  GlobalKey<FormState> formKey = GlobalKey();
+
+  bool rememberMe = false;
+
+  Future register();
+}

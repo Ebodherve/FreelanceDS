@@ -15,7 +15,7 @@ class _InscriptionionPageState extends State<InscriptionionPage>
 
   static String? loginText_;
 
-  static String? name_;
+  static String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _InscriptionionPageState extends State<InscriptionionPage>
                               "Renseignez completement votre nom",
                             ),
                             onChanged: (t) {
-                              name_ = t;
+                              username = t;
                             },
                           ),
                           const SizedBox(height: 15.0),
@@ -81,6 +81,7 @@ class _InscriptionionPageState extends State<InscriptionionPage>
                             },
                           ),
                           const SizedBox(height: 15.0),
+                          /*
                           TextFormField(
                             decoration: buildInputDecoration("Login"),
                             validator: InputValidator.login(
@@ -90,6 +91,7 @@ class _InscriptionionPageState extends State<InscriptionionPage>
                               loginText_ = t;
                             },
                           ),
+                          */
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
@@ -206,14 +208,14 @@ class _InscriptionionPageState extends State<InscriptionionPage>
 
       if (rememberMe) {
         debugPrint("saved");
-        debugPrint(name_);
+        debugPrint(username);
         debugPrint(emailText_);
-        debugPrint(loginText_);
+        //debugPrint(loginText_);
         debugPrint(passwordText_);
 
         AdCardExpertInscription data = AdCardExpertInscription(
-            nom: name_,
-            login: loginText_,
+            nom: username,
+            //login: loginText_,
             email: emailText_,
             password: passwordText_);
         InscriptionUser.SendExpertRest(data).then((value) {

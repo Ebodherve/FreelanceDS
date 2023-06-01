@@ -3,18 +3,16 @@ from django.contrib import admin
 
 
 # Register your models here.
-from .models import Utilisateur
-from .models import Expert
-from .models import Entreprise
-from .models import Postuler
-from .models import Projet
-from .models import Competences
+from api.models import (Domaine, Competence, Profile, 
+                        UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise)
 
 
-admin.site.register(Utilisateur)
-admin.site.register(Expert)
-admin.site.register(Entreprise)
-admin.site.register(Postuler)
-admin.site.register(Projet)
-admin.site.register(Competences)
-# => admin.site.register(models.User)
+admin.site.register(Domaine)
+admin.site.register(Competence)
+admin.site.register(Profile)
+admin.site.register(ProfileEntreprise)
+admin.site.register(UniteDevise)
+admin.site.register(Project)
+admin.site.register(Postulat)
+admin.site.register(Commentaire)
+

@@ -11,6 +11,7 @@ class FreelanceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //Chargement des competences disponibles
     LoadDataSiteRequest.LoadCompetences();
+    LoadDataSiteRequest.LoadDevises();
 
     return MaterialApp(
       title: 'Freelance',

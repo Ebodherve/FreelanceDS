@@ -1,9 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:front/pages/modif_profil.dart';
+import 'package:front/widgets/dashboard_widgets.dart';
 
 import 'package:front/widgets/navbar_widgets.dart';
 
 class DashboardPage extends StatefulWidget {
+  const DashboardPage({
+    super.key,
+  });
+
   @override
   _DashboardPage createState() => _DashboardPage();
 }
@@ -14,22 +20,19 @@ class _DashboardPage extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.end,
-              spacing: 0.0,
-              children: [
-                MaterialButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.notifications,
-                    size: 50,
-                  ),
-                ),
-                Text(
-                  '0',
-                  style: TextStyle(fontSize: 30),
-                )
-              ]),
+          child: Stack(alignment: Alignment.center, children: [
+            MaterialButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.notifications,
+                size: 40,
+              ),
+            ),
+            Text(
+              '0',
+              style: TextStyle(fontSize: 15),
+            )
+          ]),
         ),
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
       ),
@@ -39,60 +42,13 @@ class _DashboardPage extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: GestureDetector(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: Container(
-                      color: Colors.grey,
-                      child: Center(
-                        child: Text("PROJETS EN COUR"),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    print("PROJETS EN COUR");
-                  },
-                ),
+              SizedBox(
+                height: 150,
               ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: GestureDetector(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.width * 0.70,
-                    child: Container(
-                      color: Colors.grey,
-                      child: Center(
-                        child: Text("PORTFOLIO"),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    print("PORTFOLIO");
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: GestureDetector(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                    width: MediaQuery.of(context).size.width * 0.70,
-                    child: Container(
-                      color: Colors.grey,
-                      child: Center(
-                        child: Text("MODIFIER VOTRE PROFILE"),
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    print("PROFILE");
-                  },
-                ),
-              ),
+              ProfileEntrepriseWidget(),
+              ProjetsCoursWidget(),
+              PortfolioWidget(),
+              ModifProfileWidget(),
             ],
           ),
         ),

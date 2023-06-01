@@ -1,42 +1,74 @@
 # eboutique/serializers.py
 
 from rest_framework.serializers import ModelSerializer
-from api.models import Utilisateur, Competences, Expert, Entreprise, Projet, Postuler
+
+from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-class UtilisateurSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
-        model = Utilisateur
-        fields = ('password', 'Nom', 'Email', 'Login')
+        model = User
+        fields = ("id", "username", "password", "email")
 
 
-class CompetencesSerializer(ModelSerializer):
+class UserLoginSerializer(ModelSerializer):
     class Meta:
-        model = Competences
-        fields = ('id', 'competence',)
+        model = User
+        fields = ("id", "username", "password")
 
 
-class ExpertSerializer(ModelSerializer):
+
+class DomaineSerializer(ModelSerializer):
     class Meta:
-        model = Expert
-        #fields = ('CNI','Nom','Prenom','Description','Photo_profil','CV','Telephone','date_naissance','competence','password')
-        fields = "__all__"
+        model = Domaine
+        fields = ('id', 'nom')
 
 
-class EntrepriseSerializer(ModelSerializer):
+class CompetenceSerializer(ModelSerializer):
     class Meta:
-        model = Entreprise
-        fields = ('CNI_resp','Nom','Description','Photo_profil','Telephone','password')
+        model = Competence
+        fields = ('id', 'nom', 'domaine')
 
 
-class ProjetSerializer(ModelSerializer):
+
+class ProfileSerializer(ModelSerializer):
     class Meta:
-        model = Projet
-        fields = ('id', 'Nom','CNI_resp','Description')
+        model = Profile
+        
+        fields = ("id", "image", "titre", "description", "nb_etoiles", "prix_par_heure", "competences", "user")
 
 
-class PostulerSerializer(ModelSerializer):
+class ProfileEntrepriseSerializer(ModelSerializer):
     class Meta:
-        model = Postuler
-        fields = ('id','Num','CNI')
+        model = ProfileEntreprise
+        
+        fields = ("id", "image", "nom", "description", "user")
+
+
+class UniteDeviseSerializer(ModelSerializer):
+    class Meta:
+        model = UniteDevise
+        fields = ('id', 'nom')
+
+
+class ProjectSerializer(ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'titre', 'description', 'min_prix', 'max_prix', 'devise', 'createur', 'travailleurs', 'fini')
+    
+
+class PostulatSerializer(ModelSerializer):
+    class Meta:
+        model = Postulat
+        fields = ('id', 'text', 'somme_demande', 'project', 'user')
+
+
+class CommentaireSerializer(ModelSerializer):
+    class Meta:
+        model = Commentaire
+        fields = ('id', 'text', 'emetteur', 'destinataire',)
 

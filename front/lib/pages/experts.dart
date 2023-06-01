@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:front/widgets/navbar_widgets.dart';
 import 'package:front/widgets/card_widgets.dart';
+import 'package:front/widgets/profil_widgets.dart';
 
 class ExpertsPage extends StatefulWidget {
   final data;
@@ -14,10 +15,8 @@ class ExpertsPage extends StatefulWidget {
 }
 
 class _ExpertsPage extends State<ExpertsPage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("LISTE DES EXPERTS")),

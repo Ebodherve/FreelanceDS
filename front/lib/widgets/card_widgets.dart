@@ -1,59 +1,53 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/constants.dart';
+import 'package:front/utils/utils_fonctions.dart';
+import 'package:front/pages/postule_page.dart';
+import 'package:front/pages/portfolio.dart';
+import 'package:front/api_rest/postulat_rest.dart';
 
 class AdCardDataExpert {
   final int id;
-  final String description;
-  final String nom;
-  final String email;
+  final description;
   final String titre;
   final String? image;
-  final String? login;
-  final String? password;
-  final String price_per_hour;
-  final int nb_etoile;
-  final int nb_skills;
-  final List<String> skills;
+  final password;
+  final prix_par_heure;
+  final nb_etoiles;
+  final List competences;
 
   AdCardDataExpert({
     required this.id,
-    required this.description,
-    this.nom = '',
-    this.email = '',
+    this.description = '',
     this.titre = '',
     this.image = '',
-    this.login = '',
     this.password = '',
-    this.price_per_hour = '',
-    this.nb_etoile = 6,
-    this.nb_skills = 0,
-    this.skills = const [],
+    this.prix_par_heure = 0,
+    this.nb_etoiles = 0,
+    this.competences = const [],
   });
 
+  /*String getImage() {
+    return this.image;
+  }*/
+
   factory AdCardDataExpert.fromJson(Map<String, dynamic> json) {
-    //final formatCurrency = NumberFormat.simpleCurrency(locale: 'fr_FR');
-
-    /*var skill_liste = jsonDecode(json['competence'] ?? '[]');
-
-    skill_liste = skill_liste.map<String>((image) {
-      return image.toString();
-    }).toList();*/
+    List<String> liste_competences = [];
+    List data_competences = json['competences'] ?? [];
+    data_competences = get_list_competences(list_id: data_competences);
+    data_competences.forEach((element) {
+      liste_competences.add(element);
+    });
 
     return AdCardDataExpert(
-      id: int.parse(json['CNI']),
-      //id: json['CNI'],
-      //id: 1,
-      description: json['Description'] ?? '',
+      id: json['id'] ?? 0,
+      image: json['image'] ?? '',
       titre: json['titre'] ?? '',
-      nom: json['Nom'] ?? '',
-      price_per_hour: json['PRICE_PER_HOUR'] ?? '',
-      image: json['IMAGE'],
-      /*nb_skills: json['NB_SKILLS'] ? int.parse(json['NB_SKILLS']) : 0,
-        nb_etoile: json['NB_ETOILE'] ? int.parse(json['NB_ETOILE']) : 0,
-        nb_skills: int.parse(json['NB_SKILLS']) ?? 0,
-        nb_etoile: int.parse(json['NB_ETOILE']) ?? 0,
-        skills: skill_liste.isEmpty ? [json['competence'] ?? ''] : skill_liste,*/
+      description: json['description'] ?? '',
+      nb_etoiles: json['nb_etoiles'] ?? '',
+      prix_par_heure: json['prix_par_heure'] ?? 0,
+      competences: liste_competences,
     );
   }
 
@@ -61,162 +55,9 @@ class AdCardDataExpert {
   String toString() {
     return "{id: $id \n"
         "description: $description \n"
-        "nom: $nom \n"
         "titre: $titre \n"
         "image: $image \n"
-        "price_per_hour: $price_per_hour \n";
-  }
-}
-
-class ExpertsCardWidget extends StatefulWidget {
-  ExpertsCardWidget({
-    Key? key,
-    required this.dataObject,
-    //this.searchObject,
-    //this.viewed = false
-  }) : super(key: key);
-
-  AdCardDataExpert dataObject;
-  // Search? searchObject;
-  // bool viewed;
-
-  @override
-  _ExpertsCardWidget createState() => _ExpertsCardWidget();
-}
-
-class _ExpertsCardWidget extends State<ExpertsCardWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        color: Colors.grey[300],
-        alignment: Alignment.center,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.70,
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Placeholder(
-                  fallbackHeight: MediaQuery.of(context).size.height * 0.2,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.dataObject.nom + widget.dataObject.titre,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 15.0,
-                              color: index == widget.dataObject.nb_etoile
-                                  ? Colors.grey
-                                  : Colors.orange,
-                            ),
-                          ).toList().cast<Widget>(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(widget.dataObject.description),
-                        Row(
-                          children: List.generate(
-                            widget.dataObject.nb_skills,
-                            (index) => ListTile(
-                              title: Text(widget.dataObject.skills[index]),
-                            ),
-                          ).toList().cast<Widget>(),
-                        ),
-                      ]),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      onTap: () {
-        print("Expert");
-      },
-    );
-  }
-}
-
-class ExpertsCardWidgetSimple extends StatefulWidget {
-  ExpertsCardWidgetSimple({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  _ExpertsCardWidgetSimple createState() => _ExpertsCardWidgetSimple();
-}
-
-class _ExpertsCardWidgetSimple extends State<ExpertsCardWidgetSimple> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        color: Colors.grey[300],
-        alignment: Alignment.center,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.70,
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Placeholder(
-                  fallbackHeight: MediaQuery.of(context).size.height * 0.2,
-                  child: Image.asset("assets/images/im1.png"),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Titre",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 15.0,
-                              color: index == 4 ? Colors.grey : Colors.orange,
-                            ),
-                          ).toList().cast<Widget>(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("description"),
-                      ]),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+        "price_per_hour: $prix_par_heure \n";
   }
 }
 
@@ -224,18 +65,23 @@ class AdCardDataEnterprise {
   final int id;
   final String description;
   final String nom;
+  final String image;
+  final int user;
 
   AdCardDataEnterprise({
     required this.id,
-    required this.description,
+    this.description = '',
     this.nom = '',
+    this.image = '',
+    this.user = 0,
   });
 
   factory AdCardDataEnterprise.fromJson(Map<String, dynamic> json, stype) {
     return AdCardDataEnterprise(
-        id: int.parse(json['ID']),
-        description: json['DESCRIPTION'] ?? '',
-        nom: json['NOM'] ?? '');
+        id: int.parse(json['id']),
+        description: json['description'] ?? '',
+        nom: json['nom'] ?? '',
+        user: json['user'] ?? 0);
   }
 
   @override
@@ -371,27 +217,39 @@ class _EnterprisesCardWidgetSimple extends State<EnterprisesCardWidgetSimple> {
 
 class AdCardDataProject {
   final int id;
-  final String description;
   final String titre;
-  final String price_min;
-  final String price_max;
+  final String description;
+  final int min_prix;
+  final int max_prix;
+  final String devise;
+  final int createur;
+  final List travailleurs;
 
   AdCardDataProject({
     required this.id,
     required this.description,
     this.titre = '',
-    this.price_min = '',
-    this.price_max = '',
+    this.devise = '',
+    this.min_prix = 0,
+    this.max_prix = 0,
+    this.createur = 0,
+    this.travailleurs = const [],
   });
 
   factory AdCardDataProject.fromJson(Map<String, dynamic> json) {
+    //String monnaie = "\$";
+    int d = json['devise'];
+    String monnaie = get_devise(id: d);
+
     return AdCardDataProject(
       id: json['id'],
-      //id: int.parse(json['id']),
-      description: json['Description'] ?? '',
-      titre: json['Nom'] ?? '',
-      price_min: json['PRICE_MIN'] ?? '',
-      price_max: json['PRICE_MAX'] ?? '',
+      description: json['description'] ?? '',
+      titre: json['titre'] ?? '',
+      devise: monnaie,
+      min_prix: json['min_prix'] ?? '',
+      max_prix: json['max_prix'] ?? 0,
+      createur: json["createur"] ?? 0,
+      travailleurs: json["travailleurs"] ?? [],
     );
   }
 
@@ -441,7 +299,7 @@ class _ProjectsCardWidget extends State<ProjectsCardWidget> {
                           widget.dataObject.titre,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
+                            fontSize: 22.0,
                           ),
                         ),
                         SizedBox(
@@ -456,10 +314,16 @@ class _ProjectsCardWidget extends State<ProjectsCardWidget> {
                         ),
                         Padding(
                           padding: EdgeInsets.all(10),
-                          child: Text("prix-min : " +
-                              widget.dataObject.price_min +
-                              "prix-max : " +
-                              widget.dataObject.price_max),
+                          child: Text(
+                            "prix-min :  " +
+                                "${widget.dataObject.min_prix} " +
+                                "${widget.dataObject.devise}" +
+                                "  " +
+                                "prix-max :  " +
+                                "${widget.dataObject.max_prix} " +
+                                "${widget.dataObject.devise}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ]),
                 ),
@@ -468,69 +332,102 @@ class _ProjectsCardWidget extends State<ProjectsCardWidget> {
           ),
         ),
       ),
+      onTap: () {
+        PostulatRequest.GetPostulatProject(
+                project: widget.dataObject.id, user: USER_ID)
+            .then((value) {
+          if (value) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PostuleProjetPage(
+                        projet: widget.dataObject,
+                        text: value["text"],
+                        somme: value["somme_demande"],
+                      )),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PostuleProjetPage(
+                        projet: widget.dataObject,
+                      )),
+            );
+          }
+        });
+      },
     );
   }
 }
 
-class ProjectsCardWidgetSimple extends StatefulWidget {
-  ProjectsCardWidgetSimple({
-    Key? key,
-  }) : super(key: key);
+class AdCardDataEntreprise {
+  final int id;
+  final String nom;
+  final String image;
+  final String description;
+  final int user;
+
+  AdCardDataEntreprise({
+    required this.id,
+    this.description = "",
+    this.nom = '',
+    this.image = '',
+    this.user = 0,
+  });
+
+  factory AdCardDataEntreprise.fromJson(Map<String, dynamic> json) {
+    return AdCardDataEntreprise(
+      id: json['id'],
+      description: json['description'] ?? '',
+      nom: json['nom'] ?? '',
+      user: json['user'] ?? 0,
+    );
+  }
 
   @override
-  _ProjectsCardWidgetSimple createState() => _ProjectsCardWidgetSimple();
+  String toString() {
+    return "{id: $id \n"
+        "description: $description \n"
+        "titre: $nom \n";
+  }
 }
 
-class _ProjectsCardWidgetSimple extends State<ProjectsCardWidgetSimple> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        color: Colors.grey[300],
-        alignment: Alignment.center,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.82,
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Titre",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text("Description"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text("prix-min : " +
-                              "100" +
-                              "  " +
-                              "prix-max : " +
-                              "200"),
-                        ),
-                      ]),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+class AdCardDataPostulat {
+  final id;
+  final text;
+  final project;
+  final somme_demande;
+  final user;
+
+  AdCardDataPostulat({
+    this.id,
+    this.text = '',
+    this.project = 0,
+    this.somme_demande = 0,
+    this.user = 0,
+  });
+
+  factory AdCardDataPostulat.fromJson(Map<String, dynamic> json) {
+    List<String> liste_competences = [];
+    List data_competences = json['competences'] ?? [];
+    data_competences = get_list_competences(list_id: data_competences);
+    data_competences.forEach((element) {
+      liste_competences.add(element);
+    });
+
+    return AdCardDataPostulat(
+      id: json['id'] ?? 0,
+      text: json['text'] ?? '',
+      project: json['project'] ?? 0,
+      somme_demande: json['somme_demande'] ?? 0,
+      user: json['user'] ?? 0,
     );
+  }
+
+  @override
+  String toString() {
+    return "{id: $id \n"
+        "description: $text \n";
   }
 }
