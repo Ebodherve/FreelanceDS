@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/api_rest/projects_rest.dart';
-import 'package:front/pages/my_projects.dart';
 import 'package:front/pages/dashboard.dart';
+import 'package:front/pages/experts.dart';
 import 'package:front/pages/update_projets.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
 
-class ModifProfilEPage extends StatefulWidget {
+class CreationProjectsPage extends StatefulWidget {
   //final expert;
-  ModifProfilEPage({
+  CreationProjectsPage({
     super.key,
-    required this.entreprise,
+    required this.project,
   });
 
-  AdCardDataEnterprise entreprise;
+  AdCardDataProject project;
 
   @override
-  _ModifProfilEPage createState() => _ModifProfilEPage();
+  _CreationProjectsPage createState() => _CreationProjectsPage();
 }
 
-class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
-  static String nom_ = '';
+class _CreationProjectsPage extends State<CreationProjectsPage>
+    with RegisterAuth {
+  static String titre_ = '';
 
-  static String description_ = '';
+  static String description_ = "";
 
-  String imagePorf = "";
+  static int min_prix_ = 0;
+
+  static int max_prix_ = 0;
 
   @override
   Widget build(BuildContext context) {
-    imagePorf =
-        widget.entreprise.image == null ? "" : "${widget.entreprise.image}";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
@@ -40,35 +40,10 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Container(
-                color: const Color(0xfffcfcfb),
-                height: 60.0,
-                alignment: Alignment.center,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.2,
-                    child: widget.entreprise.image != ""
-                        ? Image.network('${widget.entreprise.image}')
-                        : Image.asset(
-                            "assets/images/default_profile.png",
-                          ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  MaterialButton(
-                    onPressed: () {},
-                    child: Text("Logo"),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ]),
-              ),
               SizedBox(
                 height: 100,
               ),
+              const Divider(height: 100.0),
               Form(
                 key: formKey,
                 child: Column(
@@ -81,16 +56,16 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                         children: <Widget>[
                           const SizedBox(height: 25.0),
                           TextFormField(
-                            initialValue: widget.entreprise.nom,
-                            decoration: buildInputDecoration("Nom"),
+                            initialValue: widget.project.titre,
+                            decoration: buildInputDecoration("Titre"),
                             validator: null,
                             onChanged: (t) {
-                              nom_ = t;
+                              titre_ = t;
                             },
                           ),
                           const SizedBox(height: 15.0),
                           TextFormField(
-                            initialValue: widget.entreprise.description,
+                            initialValue: widget.project.description,
                             decoration: buildInputDecoration("Description"),
                             validator: null,
                             onChanged: (t) {
@@ -99,8 +74,35 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                             },
                           ),
                           const SizedBox(height: 15.0),
-                          CreateProjectWidget(),
-                          MesProjetsWidget(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextFormField(
+                              //
+                              keyboardType: TextInputType.number,
+                              decoration: buildInputDecoration("Prix minimum"),
+                              validator: null,
+                              onChanged: (t) {
+                                min_prix_ = int.parse(t);
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: TextFormField(
+                              //
+                              keyboardType: TextInputType.number,
+                              decoration: buildInputDecoration("Prix maximum"),
+                              validator: null,
+                              onChanged: (t) {
+                                max_prix_ = int.parse(t);
+                              },
+                            ),
+                          ),
+                          RecommandeProfileWidget(
+                            updatefunct: () {
+                              register();
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -110,7 +112,6 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                       child: MaterialButton(
                         height: 40.0,
                         minWidth: MediaQuery.of(context).size.width,
-                        // color: const Color(0xff449b76),
                         color: Color.fromARGB(255, 3, 196, 9),
                         onPressed: () {
                           register();
@@ -119,7 +120,6 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    //CreateProjectWidget(),
                   ],
                 ),
               ),
@@ -151,18 +151,21 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
 
       //if (rememberMe) {
       if (true) {
-        //debugPrint(nom_);
+        //debugPrint(titre_);
 
-        AdCardDataEnterprise data = AdCardDataEnterprise(
-          id: USER_PROFILE_ID,
-          nom: nom_,
+        AdCardDataProject data = AdCardDataProject(
+          titre: titre_,
           description: description_,
+          devise: widget.project.devise,
+          min_prix: min_prix_,
+          max_prix: max_prix_,
+          travailleurs: widget.project.travailleurs,
+          createur: widget.project.createur,
         );
-        print("-----------------------");
-        print("Request");
-        print("-----------------------");
-        ProfilRequest.UpdateEntrepriseProfil(
-            entreprise: data, profileid: USER_PROFILE_ENTREPRISE_ID);
+        ProjectsRequest.UpdateOneProject(
+          data,
+          widget.project.id,
+        );
       }
 
       await Future.delayed(const Duration(seconds: 1));
@@ -182,18 +185,22 @@ abstract class RegisterAuth {
   Future register();
 }
 
-class CreateProjectWidget extends StatefulWidget {
-  CreateProjectWidget({
-    String this.name = "creation d'un projet",
+class RecommandeProfileWidget extends StatefulWidget {
+  RecommandeProfileWidget({
+    String this.name = "Vos recommandation pour ce projet",
+    int this.id_project = 0,
+    required this.updatefunct,
   });
 
   final name;
+  final id_project;
+  VoidCallback updatefunct;
 
   @override
-  _CreateProjectWidget createState() => _CreateProjectWidget();
+  _RecommandeProfileWidget createState() => _RecommandeProfileWidget();
 }
 
-class _CreateProjectWidget extends State<CreateProjectWidget> {
+class _RecommandeProfileWidget extends State<RecommandeProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -201,56 +208,15 @@ class _CreateProjectWidget extends State<CreateProjectWidget> {
       child: MaterialButton(
         child: Text(widget.name),
         onPressed: () {
-          AdCardDataProject P1 = AdCardDataProject(
-            id: 0,
-            description: "",
-            createur: USER_ID,
-          );
-          ProjectsRequest.CreateOneProject(P1).then(
-            (value) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CreationProjectsPage(project: value)));
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class MesProjetsWidget extends StatefulWidget {
-  MesProjetsWidget({
-    String this.name = "mes projets",
-  });
-
-  final name;
-
-  @override
-  _MesProjetsWidget createState() => _MesProjetsWidget();
-}
-
-class _MesProjetsWidget extends State<MesProjetsWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: MaterialButton(
-        child: Text(widget.name),
-        onPressed: () {
-          AdCardDataProject P1 = AdCardDataProject(
-            id: 0,
-            description: "",
-            createur: USER_ID,
-          );
-          ProjectsRequest.GetMyProjects(createur: USER_ID).then(
+          widget.updatefunct();
+          ProjectsRequest.GetProfilesProjectRecomand(
+            id__project: widget.id_project,
+          ).then(
             (value) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProjectsModifPage(data: value),
+                  builder: (context) => ExpertsPage(data: value),
                 ),
               );
             },

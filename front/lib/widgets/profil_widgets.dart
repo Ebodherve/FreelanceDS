@@ -23,6 +23,7 @@ class ExpertsCardWidget extends StatefulWidget {
 class _ExpertsCardWidget extends State<ExpertsCardWidget> {
   @override
   Widget build(BuildContext context) {
+    //print("${widget.dataObject.image}");
     return GestureDetector(
       child: Container(
         color: Colors.grey[300],
@@ -34,8 +35,12 @@ class _ExpertsCardWidget extends State<ExpertsCardWidget> {
               children: [
                 Placeholder(
                   fallbackHeight: MediaQuery.of(context).size.height * 0.2,
-                  child: widget.dataObject.image != ""
-                      ? Image.network("${widget.dataObject.image}")
+                  child: widget.dataObject.image != "" &&
+                          widget.dataObject.image != ""
+                      ? Image.network(
+                          "${widget.dataObject.image}",
+                          scale: 1.0,
+                        )
                       : Image.asset("assets/images/default_profile.png"),
                 ),
                 Padding(

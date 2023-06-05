@@ -29,6 +29,48 @@ class ProjectsRequest {
     }
   }
 
+  static Future GetMyProjects({createur}) async {
+    String base_url = const_base_url;
+    String url = base_url + 'projetcreateur/$createur/';
+
+    http.Response response = await http.get(
+      Uri.parse(Uri.encodeFull(url)),
+    );
+
+    // if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
+      //List data_json = jsonDecode(response.body);
+      List data_json = jsonDecode(response.body);
+      List data = [];
+      data_json.forEach((element) {
+        data.add(AdCardDataProject.fromJson(element));
+      });
+      return data;
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
+  static Future GetProfilesProjectRecomand({id__project}) async {
+    String base_url = const_base_url;
+    String url = base_url + 'recommandeFreel/$id__project/';
+
+    http.Response response = await http.get(
+      Uri.parse(Uri.encodeFull(url)),
+    );
+
+    if (response.statusCode == 200) {
+      List data_json = jsonDecode(response.body);
+      List data = [];
+      data_json.forEach((element) {
+        data.add(AdCardDataExpert.fromJson(element));
+      });
+      return data;
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
   static Future CreateOneProject(AdCardDataProject project) async {
     String base_url = "http://127.0.0.1:8000/";
     String url_project = base_url + 'projet/';
@@ -43,15 +85,53 @@ class ProjectsRequest {
         "description": project.description,
         'min_prix': project.min_prix,
         'max_prix': project.max_prix,
-        'devise': project.devise,
+        'devise': 1,
+        //'devise': project.devise,
         'createur': project.createur,
         'travailleurs': project.travailleurs,
-        'fini': false
+        //'fini': false
       }),
     );
 
+    print(response_project.body);
+    print(response_project.statusCode);
+
+    if (response_project.statusCode == 201) {
+      //return true;
+
+      return AdCardDataProject.fromJson(jsonDecode(response_project.body));
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
+  static Future UpdateOneProject(
+    AdCardDataProject project,
+    int id_project,
+  ) async {
+    String base_url = "http://127.0.0.1:8000/";
+    String url_project = base_url + 'projet/$id_project/';
+
+    http.Response response_project = await http.put(
+      Uri.parse(url_project),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "titre": project.titre,
+        "description": project.description,
+        'min_prix': project.min_prix,
+        'max_prix': project.max_prix,
+        //'devise': project.devise,
+        'travailleurs': project.travailleurs,
+        'fini': 'non fini',
+      }),
+    );
+
+    print(response_project.body);
+
     if (response_project.statusCode == 200) {
-      return true;
+      return AdCardDataProject.fromJson(jsonDecode(response_project.body));
     } else {
       throw Exception('Failed to create album.');
     }

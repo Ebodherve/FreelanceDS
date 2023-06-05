@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/constants.dart';
 import 'package:front/utils/utils_fonctions.dart';
 import 'package:front/pages/postule_page.dart';
 import 'package:front/pages/portfolio.dart';
+import 'package:front/pages/update_projets.dart';
 import 'package:front/api_rest/postulat_rest.dart';
 
 class AdCardDataExpert {
@@ -226,8 +228,8 @@ class AdCardDataProject {
   final List travailleurs;
 
   AdCardDataProject({
-    required this.id,
-    required this.description,
+    this.id = 0,
+    this.description = "",
     this.titre = '',
     this.devise = '',
     this.min_prix = 0,
@@ -356,6 +358,88 @@ class _ProjectsCardWidget extends State<ProjectsCardWidget> {
             );
           }
         });
+      },
+    );
+  }
+}
+
+class ProjectsCardModifWidget extends StatefulWidget {
+  ProjectsCardModifWidget({
+    Key? key,
+    required this.dataObject,
+  }) : super(key: key);
+
+  AdCardDataProject dataObject;
+  // Search? searchObject;
+  // bool viewed;
+
+  @override
+  _ProjectsCardModifWidget createState() => _ProjectsCardModifWidget();
+}
+
+class _ProjectsCardModifWidget extends State<ProjectsCardModifWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        color: Colors.grey[300],
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.82,
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.dataObject.titre,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(widget.dataObject.description),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "prix-min :  " +
+                                "${widget.dataObject.min_prix} " +
+                                "${widget.dataObject.devise}" +
+                                "  " +
+                                "prix-max :  " +
+                                "${widget.dataObject.max_prix} " +
+                                "${widget.dataObject.devise}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ]),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CreationProjectsPage(
+                    project: widget.dataObject,
+                  )),
+        );
       },
     );
   }

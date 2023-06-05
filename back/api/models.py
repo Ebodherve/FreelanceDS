@@ -57,14 +57,14 @@ class UniteDevise(models.Model):
 
 
 class Project(models.Model):
-    titre = models.CharField(max_length=255)
-    description = models.CharField(max_length=1000)
-    min_prix = models.IntegerField()
-    max_prix = models.IntegerField()
-    devise = models.ForeignKey(UniteDevise, on_delete=models.CASCADE, default=True, related_name="devise")
-    createur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="createur")
+    titre = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=1000, blank=True)
+    min_prix = models.IntegerField(blank=True)
+    max_prix = models.IntegerField(blank=True)
+    devise = models.ForeignKey(UniteDevise, on_delete=models.CASCADE, default=True, related_name="devise", blank=True)
+    createur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="createur", blank=True)
     travailleurs = models.ManyToManyField(User, related_name="travailleurs", default=True, blank=True)
-    fini = models.CharField(max_length=255, choices=[("fini","fini"), ("non fini", "non fini")], default=True)
+    fini = models.CharField(max_length=255, choices=[("fini","fini"), ("non fini", "non fini")], default=True, blank=True)
     
     def __str__(self):
         return str(self.id) + self.titre
