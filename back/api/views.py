@@ -11,6 +11,8 @@ from api.serializers import (DomaineSerializer, CompetenceSerializer, ProfileSer
                              ProjectSerializer, PostulatSerializer, CommentaireSerializer, UserSerializer, UserLoginSerializer,)
 from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise
 
+import pandas as pd
+
 
 User = get_user_model()
 
@@ -89,9 +91,9 @@ class ProfileUserViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return Profile.objects.all()
     
     def list(self, request, *args, **kwargs):
-        print(kwargs)
+        # print(kwargs)
         profileuser = Profile.objects.filter(user=kwargs["user"])
-        print(profileuser)
+        # print(profileuser)
         prof_user = self.serializer_class(profileuser.first()).data
         rep = JsonResponse(prof_user, safe=False, status=200)
 
@@ -106,9 +108,9 @@ class ProfileEntrepriseUserViewSet(ListModelMixin, RetrieveModelMixin, GenericVi
         return ProfileEntreprise.objects.all()
     
     def list(self, *args, **kwargs):
-        print(kwargs)
+        # print(kwargs)
         profileuser = ProfileEntreprise.objects.filter(user=kwargs["user"])
-        print(profileuser)
+        # print(profileuser)
         prof_user = self.serializer_class(profileuser.first()).data
         rep = JsonResponse(prof_user, safe=False, status=200)
 
@@ -128,16 +130,34 @@ class PostuleProjetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         postuleuser = Postulat.objects.filter(project=kwargs["project"], user=kwargs["user"])
         print(postuleuser)
         if postuleuser.exists():
-            prof_user = self.serializer_class(postuleuser.first()).data
-            rep = JsonResponse(prof_user, safe=False, status=200)
+            postule_user = self.serializer_class(postuleuser.first()).data
+            rep = JsonResponse(postule_user, safe=False, status=200)
         else:
             rep = JsonResponse("postulat inexistant", safe=False, status=404)
 
         return rep
 
 
+class PostulatsProjetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = PostulatSerializer
+    permission_classes= (AllowAny,)
+    
+    def get_queryset(self,):
+        
+        return Postulat.objects.all()
+    
+    def list(self, request, *args, **kwargs):
+        postuleuserQS = Postulat.objects.filter(project=kwargs["project"])
+        postule_user = self.serializer_class(postuleuserQS, many=True).data
+        rep = JsonResponse(postule_user, safe=False, status=200)
+        
+        return rep
+
+
 def model(liste_projets, projetP):
     p = projetP
+    print(projetP)
+    print(liste_projets)
     return liste_projets
 
 class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
@@ -154,15 +174,15 @@ class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericVi
         for p in PListRecommands[:1]:
             usersSelect.union(p.travailleurs.all())
         user_ids = [u.id for u in usersSelect]
-        dataProfiles = Profile.objects.filter(user__in=usersSelect)
-        #dataProfiles = Profile.objects.filter(user__in=user_ids)
-        data = ProfileSerializer(dataProfiles, many=True).data
+        print(user_ids)
+        #dataProfiles = Profile.objects.filter(user__in=usersSelect)
+        dataProfiles = Profile.objects.filter(user__in=user_ids)
+        data = self.serializer_class(dataProfiles, many=True).data
+        print(data)
         resp = JsonResponse(data=data, safe=False, status=200)
         
         return resp
         #profilesSelect = PListRecommands.first().travailleurs
-        
-        
 
 
 class ProfileEntrepriseViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, 
@@ -213,11 +233,10 @@ class ProjectCreateurViewSet( ListModelMixin, GenericViewSet):
     def list(self, *args, **kwargs):
         ProjectsC = Project.objects.filter(createur=kwargs["createur"])
         projectsdata = self.serializer_class(ProjectsC, many=True).data
-        print(projectsdata)
+        #print(projectsdata)
         resp = JsonResponse(projectsdata, safe=False, status=200)
         return resp
         
-
 
 class PostulatViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, 
                          UpdateModelMixin, RetrieveModelMixin,GenericViewSet):

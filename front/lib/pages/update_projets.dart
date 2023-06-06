@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/pages/dashboard.dart';
-import 'package:front/pages/experts.dart';
+import 'package:front/pages/experts_recommande.dart';
 import 'package:front/pages/update_projets.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
@@ -99,6 +99,7 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                             ),
                           ),
                           RecommandeProfileWidget(
+                            id_project: widget.project.id,
                             updatefunct: () {
                               register();
                             },
@@ -151,8 +152,6 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
 
       //if (rememberMe) {
       if (true) {
-        //debugPrint(titre_);
-
         AdCardDataProject data = AdCardDataProject(
           titre: titre_,
           description: description_,
@@ -216,7 +215,7 @@ class _RecommandeProfileWidget extends State<RecommandeProfileWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ExpertsPage(data: value),
+                  builder: (context) => ExpertsRecommandPage(data: value),
                 ),
               );
             },

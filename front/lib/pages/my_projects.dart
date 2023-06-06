@@ -29,6 +29,7 @@ class _ProjectsModifPage extends State<ProjectsModifPage> {
           child: ListView.builder(
             itemCount: widget.data.length,
             itemBuilder: ((context, index) {
+              print(widget.data[index].id);
               return Container(
                 child: ProjectsCardModifWidget(dataObject: widget.data[index]),
               );

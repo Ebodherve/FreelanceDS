@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/api_rest/postulat_rest.dart';
 import 'package:front/widgets/card_widgets.dart';
+import 'package:front/pages/postulats.dart';
 import 'package:front/constants.dart';
 
 class PostuleProjetPage extends StatefulWidget {
@@ -9,21 +9,23 @@ class PostuleProjetPage extends StatefulWidget {
   PostuleProjetPage({
     super.key,
     required this.projet,
-    int somme = 0,
-    String text = "",
+    int this.id_postule = 0,
+    int this.somme = 0,
+    String this.text = "",
   });
   AdCardDataProject projet;
-  var somme;
-  var text;
+  int id_postule;
+  int somme;
+  String text;
 
   @override
   _PostuleProjetPage createState() => _PostuleProjetPage();
 }
 
 class _PostuleProjetPage extends State<PostuleProjetPage> with RegisterAuth {
-  static String? text_;
+  String text_ = "";
 
-  static int? somme_;
+  int somme_ = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -157,10 +159,20 @@ class _PostuleProjetPage extends State<PostuleProjetPage> with RegisterAuth {
         AdCardDataPostulat postule = AdCardDataPostulat(
           text: text_,
           somme_demande: somme_,
-          project: widget.projet,
+          project: widget.projet.id,
           user: USER_ID,
         );
-        PostulatRequest.PostuleProject(postule);
+        PostulatRequest.UpdatePostuleProject(
+                postulat: postule, id_postulat: widget.id_postule)
+            .then((value) {
+          PostulatRequest.GetPostulatsProject(project: widget.projet.id)
+              .then((value) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PostulatsPage(data: value)));
+          });
+        });
       }
 
       await Future.delayed(const Duration(seconds: 1));

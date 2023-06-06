@@ -10,6 +10,7 @@ class ProfilRequest {
     String base_url = const_base_url;
     int id = userid != null ? userid : USER_ID;
     String url = base_url + 'profileuser/' + '$id';
+    //print(url);
 
     http.Response response = await http.get(
       Uri.parse(Uri.encodeFull(url)),

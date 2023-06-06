@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/constants.dart';
+import 'package:front/api_rest/experts_rest.dart';
+import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/constants.dart';
 import 'package:front/utils/utils_fonctions.dart';
@@ -335,27 +338,33 @@ class _ProjectsCardWidget extends State<ProjectsCardWidget> {
         ),
       ),
       onTap: () {
-        PostulatRequest.GetPostulatProject(
+        PostulatRequest.GetOnePostulatProject(
                 project: widget.dataObject.id, user: USER_ID)
             .then((value) {
-          if (value) {
+          if (value != false) {
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PostuleProjetPage(
+                        id_postule: value.id,
                         projet: widget.dataObject,
-                        text: value["text"],
-                        somme: value["somme_demande"],
+                        text: value.text,
+                        somme: value.somme_demande,
                       )),
             );
           } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PostuleProjetPage(
-                        projet: widget.dataObject,
-                      )),
-            );
+            PostulatRequest.PostuleProject(AdCardDataPostulat(
+                    project: widget.dataObject.id, user: USER_ID))
+                .then((value) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PostuleProjetPage(
+                          id_postule: value.id,
+                          projet: widget.dataObject,
+                        )),
+              );
+            });
           }
         });
       },
@@ -513,5 +522,104 @@ class AdCardDataPostulat {
   String toString() {
     return "{id: $id \n"
         "description: $text \n";
+  }
+}
+
+class PostulatCardWidget extends StatefulWidget {
+  PostulatCardWidget({
+    Key? key,
+    required this.dataObject,
+    //this.searchObject,
+    //this.viewed = false
+  }) : super(key: key);
+
+  AdCardDataPostulat dataObject;
+  // Search? searchObject;
+  // bool viewed;
+
+  @override
+  _PostulatCardWidget createState() => _PostulatCardWidget();
+}
+
+class _PostulatCardWidget extends State<PostulatCardWidget> {
+  String image_postuleur = "";
+
+  @override
+  getImage() {
+    ProfilRequest.GetExpertProfil(userid: widget.dataObject.user).then((value) {
+      setState(() {
+        image_postuleur = const_base_urlIm + value.image;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    getImage();
+    return GestureDetector(
+      child: Container(
+        color: Colors.grey[300],
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.82,
+          child: Card(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Placeholder(
+                  fallbackHeight: MediaQuery.of(context).size.height * 0.2,
+                  child: image_postuleur != "" && image_postuleur != null
+                      ? Image.network(
+                          "${image_postuleur}",
+                          scale: 1.0,
+                        )
+                      : Image.asset("assets/images/default_profile.png"),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.dataObject.text,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "somme demandée :  " +
+                                "${widget.dataObject.somme_demande} ",
+                            //+ "${widget.dataObject.devise}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ]),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        ProfilRequest.GetExpertProfil(userid: int.parse(widget.dataObject.user))
+            .then((value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => ExpertPortfolioPage(dataObject: value)),
+            ),
+          );
+        });
+      },
+    );
   }
 }
