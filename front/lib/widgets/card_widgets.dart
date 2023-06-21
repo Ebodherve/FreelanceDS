@@ -16,7 +16,7 @@ class AdCardDataExpert {
   final int id;
   final description;
   final String titre;
-  final String? image;
+  final String image;
   final password;
   final prix_par_heure;
   final nb_etoiles;
@@ -33,11 +33,10 @@ class AdCardDataExpert {
     this.competences = const [],
   });
 
-  /*String getImage() {
-    return this.image;
-  }*/
-
-  factory AdCardDataExpert.fromJson(Map<String, dynamic> json) {
+  factory AdCardDataExpert.fromJson({
+    json = null,
+    String Imbase = "",
+  }) {
     List<String> liste_competences = [];
     List data_competences = json['competences'] ?? [];
     data_competences = get_list_competences(list_id: data_competences);
@@ -45,9 +44,13 @@ class AdCardDataExpert {
       liste_competences.add(element);
     });
 
+    String im = json['image'] != null && json['image'] != ""
+        ? Imbase + json['image']
+        : "";
+
     return AdCardDataExpert(
       id: json['id'] ?? 0,
-      image: json['image'] ?? '',
+      image: im,
       titre: json['titre'] ?? '',
       description: json['description'] ?? '',
       nb_etoiles: json['nb_etoiles'] ?? '',
@@ -81,9 +84,9 @@ class AdCardDataEnterprise {
     this.user = 0,
   });
 
-  factory AdCardDataEnterprise.fromJson(Map<String, dynamic> json, stype) {
+  factory AdCardDataEnterprise.fromJson(json) {
     return AdCardDataEnterprise(
-        id: int.parse(json['id']),
+        id: json['id'],
         description: json['description'] ?? '',
         nom: json['nom'] ?? '',
         user: json['user'] ?? 0);
@@ -526,16 +529,16 @@ class AdCardDataPostulat {
 }
 
 class PostulatCardWidget extends StatefulWidget {
-  PostulatCardWidget({
-    Key? key,
-    required this.dataObject,
-    //this.searchObject,
-    //this.viewed = false
-  }) : super(key: key);
+  PostulatCardWidget(
+      {Key? key,
+      required this.dataObject,
+      //this.searchObject,
+      this.vueE = false})
+      : super(key: key);
 
   AdCardDataPostulat dataObject;
   // Search? searchObject;
-  // bool viewed;
+  bool vueE;
 
   @override
   _PostulatCardWidget createState() => _PostulatCardWidget();
@@ -548,7 +551,11 @@ class _PostulatCardWidget extends State<PostulatCardWidget> {
   getImage() {
     ProfilRequest.GetExpertProfil(userid: widget.dataObject.user).then((value) {
       setState(() {
-        image_postuleur = const_base_urlIm + value.image;
+        if (value.image != "") {
+          image_postuleur = const_base_urlIm + value.image;
+        } else {
+          image_postuleur = "";
+        }
       });
     });
   }
@@ -604,6 +611,28 @@ class _PostulatCardWidget extends State<PostulatCardWidget> {
                         ),
                       ]),
                 ),
+                widget.vueE == true
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          MaterialButton(
+                            child: Text("Accepter"),
+                            onPressed: () {
+                              ProjectsRequest.AddTravailleur(
+                                      projet: widget.dataObject.project,
+                                      travailleur: widget.dataObject.user)
+                                  .then(
+                                (value) {
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context)=>),);
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      )
+                    : Container(
+                        child: null,
+                      ),
               ],
             ),
           ),

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
+import 'package:front/widgets/card_widgets.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:front/widgets/card_widgets.dart';
@@ -63,7 +64,7 @@ class ProjectsRequest {
       List data_json = jsonDecode(response.body);
       List data = [];
       data_json.forEach((element) {
-        data.add(AdCardDataExpert.fromJson(element));
+        data.add(AdCardDataExpert.fromJson(json: element));
       });
       return data;
     } else {
@@ -151,6 +152,19 @@ class ProjectsRequest {
       return AdCardDataProject.fromJson(project);
     } else {
       throw Exception('Failed to create album.');
+    }
+  }
+
+  static Future AddTravailleur({projet, travailleur}) async {
+    String url = const_base_url + 'acceptetravailleur/$projet/$travailleur/';
+    http.Response response = await http.post(
+      Uri.parse(Uri.encodeFull(url)),
+    );
+
+    if (response.statusCode == 201) {
+      return AdCardDataExpert.fromJson(json: jsonDecode(response.body));
+    } else {
+      return false;
     }
   }
 

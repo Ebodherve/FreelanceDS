@@ -78,7 +78,7 @@ class _ExpertPortfolioPage extends State<ExpertPortfolioPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    /*Row(
                       children: List.generate(
                         widget.dataObject.competences.length,
                         (index) => Padding(
@@ -89,7 +89,7 @@ class _ExpertPortfolioPage extends State<ExpertPortfolioPage> {
                           ),
                         ),
                       ).toList().cast<Widget>(),
-                    ),
+                    ),*/
                     Text(
                       "${widget.dataObject.prix_par_heure}" + "\$/heure",
                       style: TextStyle(fontSize: 15, color: Colors.black87),

@@ -210,11 +210,22 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
         ),
       ),
       onTap: () {
+        AdCardDataExpert expertClick = AdCardDataExpert(
+          id: widget.dataObject.id,
+          titre: widget.dataObject.titre,
+          image: const_base_urlIm + widget.dataObject.image,
+          description: widget.dataObject.description,
+          prix_par_heure: widget.dataObject.prix_par_heure,
+          nb_etoiles: widget.dataObject.nb_etoiles,
+          competences: widget.dataObject.competences,
+        );
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ExpertPortfolioPage(dataObject: widget.dataObject),
+            builder: (context) => ExpertPortfolioPage(
+              dataObject: expertClick,
+            ),
           ),
         );
       },

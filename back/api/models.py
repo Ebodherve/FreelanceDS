@@ -89,3 +89,12 @@ class Commentaire(models.Model):
         return str(self.id) + self.text
 
 
+class Message(models.Model):
+    text = models.CharField(max_length=255)
+    emetteur = models.ForeignKey(User, on_delete=models.CASCADE, related_name="emetteurM")
+    destinataire = models.ForeignKey(User, on_delete=models.CASCADE, related_name="destinataireM")
+    
+    def __str__(self):
+        return str(self.id) + self.text
+
+

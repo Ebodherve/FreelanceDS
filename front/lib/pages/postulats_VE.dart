@@ -4,24 +4,22 @@ import 'package:front/widgets/navbar_widgets.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/widgets/profil_widgets.dart';
 
-class ExpertsRecommandPage extends StatefulWidget {
+class PostulatsVEPage extends StatefulWidget {
   final data;
-  final titre;
-  const ExpertsRecommandPage({
+  const PostulatsVEPage({
     super.key,
     required List this.data,
-    String this.titre = "LISTE DES EXPERTS",
   });
   @override
-  _ExpertsRecommandPage createState() => _ExpertsRecommandPage();
+  _PostulatsVEPage createState() => _PostulatsVEPage();
 }
 
-class _ExpertsRecommandPage extends State<ExpertsRecommandPage> {
+class _PostulatsVEPage extends State<PostulatsVEPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.titre)),
+        title: Center(child: Text("DIFFERENTS POSTULATS")),
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
       ),
       backgroundColor: const Color(0xffffffff),
@@ -30,8 +28,10 @@ class _ExpertsRecommandPage extends State<ExpertsRecommandPage> {
           itemCount: widget.data.length,
           itemBuilder: ((context, index) {
             return Container(
-              child:
-                  ExpertsCardRecommandeWidget(dataObject: widget.data[index]),
+              child: PostulatCardWidget(
+                dataObject: widget.data[index],
+                vueE: true,
+              ),
             );
           }),
         ),
