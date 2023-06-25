@@ -6,11 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class ProfilRequest {
-  static Future GetExpertProfil({userid}) async {
+  static Future GetExpertProfil({userid, Imprecision = false}) async {
     String base_url = const_base_url;
     int id = userid != null ? userid : USER_ID;
     String url = base_url + 'profileuser/' + '$id';
-    //print(url);
 
     http.Response response = await http.get(
       Uri.parse(Uri.encodeFull(url)),
@@ -25,15 +24,27 @@ class ProfilRequest {
       }
 
       USER_PROFILE_ID = jsonExpert["id"];
+      AdCardDataExpert expert;
 
-      AdCardDataExpert expert = AdCardDataExpert(
+      if (Imprecision) {
+        expert = AdCardDataExpert.fromJson(
+          json: jsonDecode(response.body),
+          Imbase: const_base_urlIm,
+        );
+      } else {
+        expert = AdCardDataExpert.fromJson(
+          json: jsonDecode(response.body),
+        );
+      }
+
+      /*AdCardDataExpert expert = AdCardDataExpert(
         id: jsonExpert["id"],
         description: jsonExpert["description"],
         image: jsonExpert["image"],
         titre: jsonExpert["titre"],
         prix_par_heure: jsonExpert["prix_par_heure"],
         competences: jsonExpert["competences"],
-      );
+      );*/
       return expert;
     }
     //else if (response.statusCode == 500) {}
@@ -51,10 +62,8 @@ class ProfilRequest {
       Uri.parse(Uri.encodeFull(url)),
     );
 
-    print(response.body);
-
     if (response.statusCode == 200) {
-      Map jsonExpert = jsonDecode(response.body);
+      var jsonExpert = jsonDecode(response.body);
 
       if (jsonExpert["id"] == null) {
         ProfilRequest.CreateSimpleEntrepriseProfil();
@@ -70,6 +79,8 @@ class ProfilRequest {
         image: jsonExpert["image"] != null ? jsonExpert["image"] : "",
       );
       //AdCardDataEnterprise expert = AdCardDataEnterprise.fromJson(jsonExpert);
+      AdCardDataEnterprise enterprise =
+          AdCardDataEnterprise.fromJson(jsonExpert);
 
       return entreprise;
     } else {
@@ -80,12 +91,6 @@ class ProfilRequest {
   static Future UpdateEntrepriseProfil({entreprise, profileid}) async {
     String base_url = const_base_url;
     String url = base_url + 'profilentreprise/' + '$profileid/';
-
-    //AdCardDataEntreprise entreprise_ = entreprise;
-    print(url);
-    print(USER_ID);
-    print(USER_PROFILE_ENTREPRISE_ID);
-    print(USER_PROFILE_ID);
 
     http.Response response = await http.put(
       Uri.parse(Uri.encodeFull(url)),
@@ -99,8 +104,6 @@ class ProfilRequest {
         //"user": USER_ID,
       }),
     );
-
-    print(response.body);
 
     if (response.statusCode == 200) {
       //return jsonDecode(response.body);
@@ -126,7 +129,7 @@ class ProfilRequest {
         "nb_etoiles": expert_.nb_etoiles,
         "competences": expert_.competences,
         "prix_par_heure": expert_.prix_par_heure,
-        "user": USER_ID,
+        //"user": USER_ID,
       }),
     );
 
@@ -148,9 +151,6 @@ class ProfilRequest {
     int prix_par_heure = 0;
     List competences = [];
     int user = USER_ID;
-    print("--------------------");
-    print(user);
-    print("--------------------");
 
     final response_profile = await http.post(
       Uri.parse(url_profile),
@@ -166,7 +166,7 @@ class ProfilRequest {
         "user": USER_ID,
       }),
     );
-    print(jsonDecode(response_profile.body));
+
     USER_PROFILE_ID = jsonDecode(response_profile.body)["id"];
 
     if (response_profile.statusCode == 201) {
@@ -198,8 +198,6 @@ class ProfilRequest {
         "user": user,
       }),
     );
-
-    //print(response_profile.body);
 
     if (response_profile.statusCode == 201) {
       USER_PROFILE_ENTREPRISE_ID = jsonDecode(response_profile.body)["id"];

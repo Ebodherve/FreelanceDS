@@ -225,3 +225,45 @@ class _RecommandeProfileWidget extends State<RecommandeProfileWidget> {
     );
   }
 }
+
+class PostulatProjetWidget extends StatefulWidget {
+  PostulatProjetWidget({
+    String this.name = "Vos postulats pour ce projet",
+    int this.id_project = 0,
+    required this.updatefunct,
+  });
+
+  final name;
+  final id_project;
+  VoidCallback updatefunct;
+
+  @override
+  _PostulatProjetWidget createState() => _PostulatProjetWidget();
+}
+
+class _PostulatProjetWidget extends State<PostulatProjetWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: MaterialButton(
+        child: Text(widget.name),
+        onPressed: () {
+          widget.updatefunct();
+          ProjectsRequest.GetProfilesProjectRecomand(
+            id__project: widget.id_project,
+          ).then(
+            (value) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpertsRecommandPage(data: value),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

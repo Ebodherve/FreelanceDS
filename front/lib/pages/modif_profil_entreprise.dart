@@ -151,23 +151,16 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
 
       //if (rememberMe) {
       if (true) {
-        //debugPrint(nom_);
-
         AdCardDataEnterprise data = AdCardDataEnterprise(
           id: USER_PROFILE_ID,
           nom: nom_,
           description: description_,
         );
-        print("-----------------------");
-        print("Request");
-        print("-----------------------");
         ProfilRequest.UpdateEntrepriseProfil(
             entreprise: data, profileid: USER_PROFILE_ENTREPRISE_ID);
       }
 
-      await Future.delayed(const Duration(seconds: 1));
-
-      setState(() {});
+      //setState(() {});
     }
 
     return null;

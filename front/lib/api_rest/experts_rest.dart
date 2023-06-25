@@ -18,7 +18,28 @@ class ExpertsRequest {
       List data_json = jsonDecode(response.body);
       List<AdCardDataExpert> data = [];
       data_json.forEach((element) {
-        data.add(AdCardDataExpert.fromJson(element));
+        data.add(AdCardDataExpert.fromJson(json: element));
+      });
+
+      return data;
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
+  static Future GetTravailleursProject({project}) async {
+    String base_url = const_base_url;
+    String url = base_url + 'projettravailleur/$project/';
+
+    http.Response response = await http.get(
+      Uri.parse(Uri.encodeFull(url)),
+    );
+
+    if (response.statusCode == 200) {
+      List data_json = jsonDecode(response.body);
+      List<AdCardDataExpert> data = [];
+      data_json.forEach((element) {
+        data.add(AdCardDataExpert.fromJson(json: element));
       });
 
       return data;

@@ -1,8 +1,8 @@
-# eboutique/serializers.py
 
 from rest_framework.serializers import ModelSerializer
 
-from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise
+from api.models import (Domaine, Competence, Profile, UniteDevise, Project, 
+                        Postulat, Commentaire, ProfileEntreprise, Message)
 
 from django.contrib.auth import get_user_model
 
@@ -71,4 +71,11 @@ class CommentaireSerializer(ModelSerializer):
     class Meta:
         model = Commentaire
         fields = ('id', 'text', 'emetteur', 'destinataire',)
+
+
+class MessageSerializer(ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('id', 'text', 'emetteur', 'destinataire',)
+
 

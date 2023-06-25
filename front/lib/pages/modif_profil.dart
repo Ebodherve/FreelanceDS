@@ -18,19 +18,16 @@ class ModifProfilPage extends StatefulWidget {
 }
 
 class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
-  static String titre_ = '';
+  String titre_ = '';
 
-  static String? description_;
+  String description_ = "";
 
-  static int? prix_par_heure_;
+  int prix_par_heure_ = 0;
 
   TextInputType tint = TextInputType.number;
 
-  String imagePorf = "";
-
   @override
   Widget build(BuildContext context) {
-    imagePorf = widget.expert.image == null ? "" : "${widget.expert.image}";
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
@@ -50,11 +47,12 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                     fallbackHeight: MediaQuery.of(context).size.height * 0.2,
                     //child: Image.network("${widget.dataObject.image}"),
                     //child: Image.network(""),
-                    child: widget.expert.image != null
-                        ? Image.network('${widget.expert.image}')
-                        : Image.asset(
-                            "assets/images/default_profile.png",
-                          ),
+                    child:
+                        widget.expert.image != null && widget.expert.image != ""
+                            ? Image.network('${widget.expert.image}')
+                            : Image.asset(
+                                "assets/images/default_profile.png",
+                              ),
                   ),
                   SizedBox(
                     height: 30,
@@ -97,7 +95,6 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                             decoration: buildInputDecoration("Description"),
                             validator: null,
                             onChanged: (t) {
-                              ;
                               description_ = t;
                             },
                           ),
@@ -141,14 +138,16 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                 children: List.generate(
                   //0,
                   widget.expert.competences.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      //"",
-                      widget.expert.competences[index],
-                      style: TextStyle(fontSize: 25, color: Colors.pink),
-                    ),
-                  ),
+                  (index) {
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        //"..........",
+                        widget.expert.competences[index],
+                        style: TextStyle(fontSize: 25, color: Colors.pink),
+                      ),
+                    );
+                  },
                 ).toList().cast<Widget>(),
               ),
               MaterialButton(
@@ -185,8 +184,6 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
 
       //if (rememberMe) {
       if (true) {
-        //debugPrint(titre_);
-
         AdCardDataExpert data = AdCardDataExpert(
           id: USER_PROFILE_ID,
           titre: titre_,

@@ -20,6 +20,13 @@ class _ProjectsModifPage extends State<ProjectsModifPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Center(
+            child: Text(
+          "MES PROJETS",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        )),
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
       ),
       backgroundColor: const Color(0xffffffff),

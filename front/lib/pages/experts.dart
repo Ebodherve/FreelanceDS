@@ -6,10 +6,13 @@ import 'package:front/widgets/profil_widgets.dart';
 
 class ExpertsPage extends StatefulWidget {
   final data;
+  final titre;
   const ExpertsPage({
     super.key,
     required List this.data,
+    String this.titre = "LISTE DES EXPERTS",
   });
+
   @override
   _ExpertsPage createState() => _ExpertsPage();
 }
@@ -19,7 +22,7 @@ class _ExpertsPage extends State<ExpertsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("LISTE DES EXPERTS")),
+        title: Center(child: Text(widget.titre)),
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
       ),
       backgroundColor: const Color(0xffffffff),

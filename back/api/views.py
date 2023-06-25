@@ -8,14 +8,13 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers import (DomaineSerializer, CompetenceSerializer, ProfileSerializer, UniteDeviseSerializer, ProfileEntrepriseSerializer,
-                             ProjectSerializer, PostulatSerializer, CommentaireSerializer, UserSerializer, UserLoginSerializer,)
-from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise
+                             ProjectSerializer, PostulatSerializer, CommentaireSerializer, UserSerializer, UserLoginSerializer, MessageSerializer)
+from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise, Message
 
-import pandas as pd
-
+from api.model_MLFBin import get_modelML
 
 User = get_user_model()
-
+#modelML = get_modelML()
 
 class UserViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = UserSerializer
@@ -82,6 +81,26 @@ class ProfileViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
         return Profile.objects.all()
 
 
+class AccepteTravailleurViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = ProfileSerializer
+    permission_classes= (AllowAny,)
+    
+    def get_queryset(self,):
+        #return Profile.objects.all()
+        return Profile.objects.all()
+    
+    def create(self, request, *args, **kwargs):
+        project = Project.objects.filter(id = kwargs["project"])
+        profileT = Profile.objects.filter(id = kwargs["project"])
+        if project.exists():
+            project = project.first()
+            project.travailleurs.add(kwargs['travailleur'])
+            prof_user = self.serializer_class(profileT.first()).data
+            rep = JsonResponse(prof_user, safe=False, status=201)
+            return rep
+        return JsonResponse(data="Projet inexistant", status=404)
+        
+
 class ProfileUserViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ProfileSerializer
     permission_classes= (AllowAny,)
@@ -100,6 +119,26 @@ class ProfileUserViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return rep
 
 
+class TravailleursProjectViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = ProfileSerializer
+    permission_classes= (AllowAny,)
+    
+    def get_queryset(self,):
+        return Profile.objects.all()
+    
+    def list(self, request, *args, **kwargs):
+        project = Project.objects.filter(id=kwargs["project"])
+        print(project)
+        if project.exists():
+            project = project.first()
+            project_user = self.serializer_class(Profile.objects.filter(user__in = project.travailleurs.all()), many=True).data
+            print(project_user)
+            rep = JsonResponse(project_user, safe=False, status=200)
+            return rep
+
+        return JsonResponse(data="Projet inexistant", status=404)
+
+
 class ProfileEntrepriseUserViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ProfileEntrepriseSerializer
     permission_classes= (AllowAny,)
@@ -112,6 +151,7 @@ class ProfileEntrepriseUserViewSet(ListModelMixin, RetrieveModelMixin, GenericVi
         profileuser = ProfileEntreprise.objects.filter(user=kwargs["user"])
         # print(profileuser)
         prof_user = self.serializer_class(profileuser.first()).data
+        print(prof_user)
         rep = JsonResponse(prof_user, safe=False, status=200)
 
         return rep
@@ -154,11 +194,26 @@ class PostulatsProjetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet)
         return rep
 
 
-def model(liste_projets, projetP):
+def model_distance(liste_projets, projetP):
     p = projetP
     print(projetP)
     print(liste_projets)
     return liste_projets
+
+
+"""
+def model_distance(liste_projets, projetP, seuil=0.75):
+    p = projetP
+    pSelectsid = []
+    
+    for projet in liste_projets:
+        if modelML.distance(projet.description, p.description) >= seuil:
+            pSelectsid.append(projet.id)
+    
+    #return liste_projets
+    return Project.objects.filter(pk__in = pSelectsid)
+"""
+
 
 class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = ProfileSerializer
@@ -169,20 +224,16 @@ class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericVi
     
     def list(self, request, *args, **kwargs):
         PSelect = Project.objects.filter(id = kwargs["id_project"])
-        PListRecommands = model(Project.objects.all(), PSelect.first())
+        PListRecommands = model_distance(Project.objects.all(), PSelect.first())
         usersSelect = PListRecommands.first().travailleurs.all()
         for p in PListRecommands[:1]:
             usersSelect.union(p.travailleurs.all())
         user_ids = [u.id for u in usersSelect]
-        print(user_ids)
-        #dataProfiles = Profile.objects.filter(user__in=usersSelect)
         dataProfiles = Profile.objects.filter(user__in=user_ids)
         data = self.serializer_class(dataProfiles, many=True).data
-        print(data)
         resp = JsonResponse(data=data, safe=False, status=200)
         
         return resp
-        #profilesSelect = PListRecommands.first().travailleurs
 
 
 class ProfileEntrepriseViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, 
@@ -192,7 +243,12 @@ class ProfileEntrepriseViewSet(CreateModelMixin, DestroyModelMixin, ListModelMix
 
 
     def get_queryset(self):
-        return Profile.objects.all()
+        return ProfileEntreprise.objects.all()
+    
+    def update(self, request, *args, **kwargs):
+        ret = super().update(request, *args, **kwargs)
+        ob = ProfileEntreprise.objects.filter(pk=kwargs["pk"]).first()
+        return ret
 
 
 class UniteDeviseViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, 
@@ -242,7 +298,7 @@ class PostulatViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
                          UpdateModelMixin, RetrieveModelMixin,GenericViewSet):
     serializer_class = PostulatSerializer
     permission_classes= (AllowAny,)
-
+    
     def get_queryset(self):
         return Postulat.objects.all()
 
@@ -251,7 +307,17 @@ class CommentaireViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
                          UpdateModelMixin, RetrieveModelMixin,GenericViewSet):
     serializer_class = CommentaireSerializer
     permission_classes= (AllowAny,)
-
+    
     def get_queryset(self):
         return Commentaire.objects.all()
+
+
+class MessageViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin, 
+                         UpdateModelMixin, RetrieveModelMixin,GenericViewSet):
+    serializer_class = MessageSerializer
+    permission_classes= (AllowAny,)
+    
+    def get_queryset(self):
+        return Message.objects.all()
+
 
