@@ -141,6 +141,34 @@ class ProfilRequest {
     }
   }
 
+  static Future UpdateExpertImProfil({file, profileid}) async {
+    String base_url = const_base_url;
+    String url = base_url + 'profile/' + '$profileid/';
+
+    print("Debut ------------------1");
+
+    var request = http.MultipartRequest('PUT', Uri.parse(url));
+    request.files.add(await http.MultipartFile.fromPath('image', file.path));
+    print("Debut ------------------1");
+
+    http.StreamedResponse Sresponse = await request.send();
+
+    http.Response response = await http.Response.fromStream(Sresponse);
+
+    print("response----------------------------");
+    print("response----------------------------");
+    print(response.body);
+    print("response----------------------------");
+    print("response----------------------------");
+
+    if (response.statusCode == 200) {
+      //return jsonDecode(response.body);
+      return true;
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
   static Future CreateSimpleExpertProfil() async {
     String base_url = const_base_url;
     String url_profile = base_url + 'profile/';

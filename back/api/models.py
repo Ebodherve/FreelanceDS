@@ -25,13 +25,13 @@ class Competence(models.Model):
 class Profile(models.Model):
     
     #image = models.ImageField(upload_to="/photos_profiles/", null=True)
-    image = models.ImageField(upload_to="photos_profiles/", null=True, default="")
+    image = models.ImageField(upload_to="photos_profiles/", null=True, default="", blank=True)
     titre = models.CharField(max_length=255, blank=True)
     description = models.CharField(max_length=3000, blank=True)
-    nb_etoiles = models.IntegerField()
-    prix_par_heure = models.IntegerField()
+    nb_etoiles = models.IntegerField(blank=True)
+    prix_par_heure = models.IntegerField(blank=True)
     competences = models.ManyToManyField(Competence, related_name="competences", blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
     
     def __str__(self):
         return str(self.id) + self.titre

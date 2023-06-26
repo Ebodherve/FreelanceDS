@@ -49,7 +49,7 @@ class ExpertsRequest {
   }
 
   static Future GetOneExpert(id) async {
-    String base_url = "http://127.0.0.1:8000/api/";
+    String base_url = const_base_url;
     String url = base_url + 'Expert/' + '$id/';
 
     http.Response response = await http.get(

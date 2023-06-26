@@ -43,7 +43,7 @@ class _DashboardPage extends State<DashboardPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: 150,
+                height: 50,
               ),
               ProfileEntrepriseWidget(),
               ProjetsCoursWidget(),

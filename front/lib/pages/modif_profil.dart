@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/pages/dashboard.dart';
+import 'package:front/pages/update_image.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
 
@@ -58,7 +59,14 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                     height: 30,
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateImagePage(),
+                        ),
+                      );
+                    },
                     child: Text("Photo de profile"),
                   ),
                   SizedBox(
@@ -67,9 +75,9 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                 ]),
               ),
               SizedBox(
-                height: 100,
+                height: 25.0,
               ),
-              const Divider(height: 100.0),
+              const Divider(height: 25.0),
               Form(
                 key: formKey,
                 child: Column(
@@ -102,8 +110,7 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
-                              //initialValue: widget.expert.prix_par_heure,
-                              //initialValue: 0,
+                              initialValue: "${widget.expert.prix_par_heure}",
                               keyboardType: TextInputType.number,
                               decoration:
                                   buildInputDecoration("prix par heure"),

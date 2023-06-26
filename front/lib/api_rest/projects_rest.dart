@@ -73,7 +73,7 @@ class ProjectsRequest {
   }
 
   static Future CreateOneProject(AdCardDataProject project) async {
-    String base_url = "http://127.0.0.1:8000/";
+    String base_url = const_base_url;
     String url_project = base_url + 'projet/';
 
     http.Response response_project = await http.post(
@@ -110,7 +110,7 @@ class ProjectsRequest {
     AdCardDataProject project,
     int id_project,
   ) async {
-    String base_url = "http://127.0.0.1:8000/";
+    String base_url = const_base_url;
     String url_project = base_url + 'projet/$id_project/';
 
     http.Response response_project = await http.put(
@@ -139,7 +139,7 @@ class ProjectsRequest {
   }
 
   static Future GetOneProject(id) async {
-    String base_url = "http://127.0.0.1:8000/";
+    String base_url = const_base_url;
     String url = base_url + 'projet/' + '$id/';
 
     http.Response response = await http.get(

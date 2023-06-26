@@ -76,15 +76,15 @@ class _ExpertsCardWidget extends State<ExpertsCardWidget> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
+                        Wrap(
                           children: List.generate(
                             widget.dataObject.competences.length,
                             (index) => Padding(
-                              padding: EdgeInsets.all(20),
+                              padding: EdgeInsets.all(2),
                               child: Text(
                                 widget.dataObject.competences[index],
                                 style:
-                                    TextStyle(fontSize: 25, color: Colors.pink),
+                                    TextStyle(fontSize: 5, color: Colors.pink),
                               ),
                             ),
                           ).toList().cast<Widget>(),
@@ -152,7 +152,7 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
                       : Image.asset("assets/images/default_profile.png"),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(24.0),
+                  padding: EdgeInsets.all(20),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -185,15 +185,17 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
+                        Wrap(
                           children: List.generate(
                             widget.dataObject.competences.length,
                             (index) => Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text(
-                                widget.dataObject.competences[index],
-                                style:
-                                    TextStyle(fontSize: 25, color: Colors.pink),
+                              padding: EdgeInsets.all(2),
+                              child: Chip(
+                                label: Text(
+                                  widget.dataObject.competences[index],
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.pink),
+                                ),
                               ),
                             ),
                           ).toList().cast<Widget>(),
@@ -204,6 +206,7 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
                         ),
                       ]),
                 ),
+                //Padding(padding:EdgeInsets.all(30), child:,),
               ],
             ),
           ),

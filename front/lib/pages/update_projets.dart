@@ -41,7 +41,7 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 100,
+                height: 20,
               ),
               const Divider(height: 100.0),
               Form(
@@ -54,7 +54,7 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const SizedBox(height: 25.0),
+                          const SizedBox(height: 10.0),
                           TextFormField(
                             initialValue: widget.project.titre,
                             decoration: buildInputDecoration("Titre"),
@@ -63,7 +63,7 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                               titre_ = t;
                             },
                           ),
-                          const SizedBox(height: 15.0),
+                          const SizedBox(height: 10.0),
                           TextFormField(
                             initialValue: widget.project.description,
                             decoration: buildInputDecoration("Description"),
@@ -73,11 +73,12 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                               description_ = t;
                             },
                           ),
-                          const SizedBox(height: 15.0),
+                          const SizedBox(height: 10.0),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
                               //
+                              initialValue: "${widget.project.min_prix}",
                               keyboardType: TextInputType.number,
                               decoration: buildInputDecoration("Prix minimum"),
                               validator: null,
@@ -90,6 +91,7 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: TextFormField(
                               //
+                              initialValue: "${widget.project.max_prix}",
                               keyboardType: TextInputType.number,
                               decoration: buildInputDecoration("Prix maximum"),
                               validator: null,
@@ -107,11 +109,11 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 10.0),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 26),
                       child: MaterialButton(
-                        height: 40.0,
+                        height: 30.0,
                         minWidth: MediaQuery.of(context).size.width,
                         color: Color.fromARGB(255, 3, 196, 9),
                         onPressed: () {

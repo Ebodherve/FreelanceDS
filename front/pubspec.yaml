@@ -38,6 +38,10 @@ dependencies:
   http: any
 
 dev_dependencies:
+  #image_picker: ^0.8.4+4
+  #path_provider: ^2.0.8
+  image_picker: any
+  path_provider: any
   flutter_test:
     sdk: flutter
 
