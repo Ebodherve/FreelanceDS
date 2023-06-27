@@ -4,4 +4,6 @@ drf_yasg
 django-allauth
 dj-rest-auth
 pillow
+nltk
+sklearn
 gunicorn
