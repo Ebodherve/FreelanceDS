@@ -11,11 +11,11 @@ from api.serializers import (DomaineSerializer, CompetenceSerializer, ProfileSer
                              ProjectSerializer, PostulatSerializer, CommentaireSerializer, UserSerializer, UserLoginSerializer, MessageSerializer)
 from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postulat, Commentaire, ProfileEntreprise, Message
 
-from api.model_MLFBin import get_modelML
+from api.model_MLFBin import getModel
 
 
 User = get_user_model()
-modelML = get_modelML()
+modelML = getModel()
 
 class UserViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = UserSerializer
@@ -258,7 +258,7 @@ class ProjectViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
 
     def get_queryset(self):
         return Project.objects.all()
-    
+
 
 class ProjectSearchViewSet( ListModelMixin, GenericViewSet):
     serializer_class = ProjectSerializer
