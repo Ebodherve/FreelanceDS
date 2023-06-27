@@ -5,15 +5,13 @@ actualpath = os.getcwd()
 
 
 
-#def get_dataML(pathBin = actualpath + "/api/ModelFiltrage"):
-def get_dataML(pathBin = actualpath + "/ModelFiltrage"):
+def get_dataML(pathBin = actualpath + "/api/ModelFiltrage"):
     with open(pathBin, "rb") as file:
         Upick = Unpickler(file)
         dataML = Upick.load()
     return dataML
 
-#def getModel(pathBin = actualpath + "/api/ModelFiltrage"):
-def getModel(pathBin = actualpath + "/ModelFiltrage"):
+def getModel(pathBin = actualpath + "/api/ModelFiltrage"):
     dataML = get_dataML(pathBin)
     
     print(dataML)
