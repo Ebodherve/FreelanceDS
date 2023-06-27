@@ -14,8 +14,6 @@ def get_dataML(pathBin = actualpath + "/api/ModelFiltrage"):
 def getModel(pathBin = actualpath + "/api/ModelFiltrage"):
     dataML = get_dataML(pathBin)
     
-    print(dataML)
-
     def stem_token(text):
         return [dataML["stemmer"].stem(token) for token in text]
     
