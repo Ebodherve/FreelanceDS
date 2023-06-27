@@ -10,9 +10,11 @@ class ModifProfilPage extends StatefulWidget {
   ModifProfilPage({
     super.key,
     required this.expert,
+    this.baseIm = "",
   });
 
   AdCardDataExpert expert;
+  String baseIm;
 
   @override
   _ModifProfilPage createState() => _ModifProfilPage();
@@ -43,7 +45,7 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                 height: 60.0,
                 alignment: Alignment.center,
                 child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Placeholder(
                     fallbackHeight: MediaQuery.of(context).size.height * 0.2,
                     //child: Image.network("${widget.dataObject.image}"),
