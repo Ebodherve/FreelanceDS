@@ -33,11 +33,13 @@ class _ModifProfileWidget extends State<ModifProfileWidget> {
         onTap: () {
           ProfilRequest.GetExpertProfil(userid: USER_ID).then((value) {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ModifProfilPage(
-                          expert: value,
-                        )));
+              context,
+              MaterialPageRoute(
+                builder: (context) => ModifProfilPage(
+                  expert: value,
+                ),
+              ),
+            );
           });
         },
       ),
@@ -148,6 +150,7 @@ class _PortfolioWidget extends State<PortfolioWidget> {
                 MaterialPageRoute(
                     builder: (context) => ExpertPortfolioPage(
                           dataObject: value,
+                          baseIm: const_base_urlIm,
                         )));
           });
         },

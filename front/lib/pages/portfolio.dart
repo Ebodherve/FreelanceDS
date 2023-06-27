@@ -9,9 +9,11 @@ class ExpertPortfolioPage extends StatefulWidget {
     required this.dataObject,
     //this.searchObject,
     //this.viewed = false
+    this.baseIm = "",
   }) : super(key: key);
 
   AdCardDataExpert dataObject;
+  String baseIm;
   // Search? searchObject;
   // bool viewed;
 
@@ -31,17 +33,18 @@ class _ExpertPortfolioPage extends State<ExpertPortfolioPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(50),
+              padding: EdgeInsets.all(30),
               child: Placeholder(
                 fallbackHeight: MediaQuery.of(context).size.height * 0.2,
                 child: widget.dataObject.image != null &&
                         widget.dataObject.image != ""
-                    ? Image.network("${widget.dataObject.image}")
+                    ? Image.network(
+                        widget.baseIm + "${widget.dataObject.image}")
                     : Image.asset("assets/images/default_profile.png"),
               ),
             ),
             SizedBox(
-              height: 8,
+              height: 10,
             ),
             Text(
               widget.dataObject.titre,

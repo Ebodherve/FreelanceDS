@@ -10,9 +10,11 @@ class UpdateImagePage extends StatefulWidget {
   UpdateImagePage({
     super.key,
     this.data,
+    String this.type_im = "expert",
   });
 
   final data;
+  String type_im;
 
   @override
   _UpdateImagePage createState() => _UpdateImagePage();
@@ -68,9 +70,6 @@ class _UpdateImagePage extends State<UpdateImagePage> with RegisterAuth {
             child: MaterialButton(
               child: Text("Update"),
               onPressed: () {
-                print("---------------------");
-                print(_image);
-                print("---------------------");
                 register();
               },
             ),
@@ -96,20 +95,19 @@ class _UpdateImagePage extends State<UpdateImagePage> with RegisterAuth {
 
   @override
   Future register() async {
-    print("----------------------");
-    print("----------------------");
-    print(_image);
-    print("----------------------");
-    print("----------------------");
-
     //if (rememberMe) {
     if (true) {
       if (_image != null) {
-        print("----------------------");
-        print("image != null");
-        print("----------------------");
-        ProfilRequest.UpdateExpertImProfil(
-            file: _image, profileid: USER_PROFILE_ID);
+        if (widget.type_im == "expert") {
+          ProfilRequest.UpdateExpertImProfil(
+              file: _image, profileid: USER_PROFILE_ID);
+        } else if (widget.type_im == "entreprise") {
+          print("Profile Entreprise --------");
+          print("Profile Entreprise --------");
+          print("Profile Entreprise --------");
+          ProfilRequest.UpdateEntrepriseImProfil(
+              file: _image, profileid: USER_PROFILE_ENTREPRISE_ID);
+        }
       }
     }
 

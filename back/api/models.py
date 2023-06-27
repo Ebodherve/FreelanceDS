@@ -40,7 +40,7 @@ class Profile(models.Model):
 class ProfileEntreprise(models.Model):
     
     #image = models.ImageField(upload_to="/photos_profiles/")
-    image = models.ImageField(upload_to="photos_profiles/", default="", null=True)
+    image = models.ImageField(upload_to="photos_profiles/", default="", null=True, blank=True)
     nom = models.CharField(max_length=255, blank=True)
     description = models.CharField(max_length=1000, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)

@@ -50,7 +50,8 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                     //child: Image.network(""),
                     child:
                         widget.expert.image != null && widget.expert.image != ""
-                            ? Image.network('${widget.expert.image}')
+                            ? Image.network(
+                                const_base_urlIm + '${widget.expert.image}')
                             : Image.asset(
                                 "assets/images/default_profile.png",
                               ),
@@ -140,22 +141,6 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                     ),
                   ],
                 ),
-              ),
-              Row(
-                children: List.generate(
-                  //0,
-                  widget.expert.competences.length,
-                  (index) {
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        //"..........",
-                        widget.expert.competences[index],
-                        style: TextStyle(fontSize: 25, color: Colors.pink),
-                      ),
-                    );
-                  },
-                ).toList().cast<Widget>(),
               ),
               MaterialButton(
                 onPressed: () {

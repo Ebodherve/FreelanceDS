@@ -4,6 +4,7 @@ import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/pages/my_projects.dart';
 import 'package:front/pages/dashboard.dart';
 import 'package:front/pages/update_projets.dart';
+import 'package:front/pages/update_image.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
 
@@ -47,27 +48,36 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.2,
+                    fallbackHeight: MediaQuery.of(context).size.height * 0.4,
                     child: widget.entreprise.image != ""
-                        ? Image.network('${widget.entreprise.image}')
+                        ? Image.network(
+                            const_base_urlIm + '${widget.entreprise.image}')
                         : Image.asset(
                             "assets/images/default_profile.png",
                           ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 10,
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              UpdateImagePage(type_im: "entreprise"),
+                        ),
+                      );
+                    },
                     child: Text("Logo"),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                 ]),
               ),
               SizedBox(
-                height: 100,
+                height: 50,
               ),
               Form(
                 key: formKey,

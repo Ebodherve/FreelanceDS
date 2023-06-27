@@ -13,8 +13,9 @@ from api.models import Domaine, Competence, Profile, UniteDevise, Project, Postu
 
 from api.model_MLFBin import get_modelML
 
+
 User = get_user_model()
-#modelML = get_modelML()
+modelML = get_modelML()
 
 class UserViewSet(CreateModelMixin, GenericViewSet):
     serializer_class = UserSerializer
@@ -194,25 +195,15 @@ class PostulatsProjetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet)
         return rep
 
 
-def model_distance(liste_projets, projetP):
-    p = projetP
-    print(projetP)
-    print(liste_projets)
-    return liste_projets
-
-
-"""
-def model_distance(liste_projets, projetP, seuil=0.75):
+def model_distance(liste_projets, projetP, seuil=0.20):
     p = projetP
     pSelectsid = []
     
     for projet in liste_projets:
-        if modelML.distance(projet.description, p.description) >= seuil:
+        if modelML(projet.description, p.description) >= seuil:
             pSelectsid.append(projet.id)
     
-    #return liste_projets
     return Project.objects.filter(pk__in = pSelectsid)
-"""
 
 
 class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
