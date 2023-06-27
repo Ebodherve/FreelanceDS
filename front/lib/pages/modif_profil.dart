@@ -44,38 +44,40 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                 color: const Color(0xfffcfcfb),
                 height: 60.0,
                 alignment: Alignment.center,
-                child:
-                    Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.2,
-                    //child: Image.network("${widget.dataObject.image}"),
-                    //child: Image.network(""),
-                    child:
-                        widget.expert.image != null && widget.expert.image != ""
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Placeholder(
+                        fallbackHeight:
+                            MediaQuery.of(context).size.height * 0.2,
+                        //child: Image.network("${widget.dataObject.image}"),
+                        //child: Image.network(""),
+                        child: widget.expert.image != null &&
+                                widget.expert.image != ""
                             ? Image.network(
                                 const_base_urlIm + '${widget.expert.image}')
                             : Image.asset(
                                 "assets/images/default_profile.png",
                               ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateImagePage(),
-                        ),
-                      );
-                    },
-                    child: Text("Photo de profile"),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ]),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateImagePage(),
+                            ),
+                          );
+                        },
+                        child: Text("Photo de profile"),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ]),
               ),
               SizedBox(
                 height: 25.0,
