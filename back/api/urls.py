@@ -6,7 +6,8 @@ from rest_framework.routers import DefaultRouter
 from api.views import (DomaineViewSet, CompetenceViewSet, UniteDeviseViewSet, ProjectViewSet, ProjectSearchViewSet,
                        PostulatViewSet, CommentaireViewSet, UserViewSet, UserLoginViewSet, ProfileViewSet, ProfileUserViewSet,
                        PostuleProjetViewSet, ProfileEntrepriseViewSet, ProfileEntrepriseUserViewSet, RecommandeFreelancersViewSet,
-                       ProjectCreateurViewSet, PostulatsProjetViewSet, MessageViewSet)
+                       ProjectCreateurViewSet, PostulatsProjetViewSet, MessageViewSet, TravailleursProjetViewSet)
+
 
 router = DefaultRouter()
 router.register('domaine', DomaineViewSet, basename='domaine')
@@ -31,6 +32,7 @@ urlpatterns = [
     path("profilentrepriseuser/<user>/", ProfileEntrepriseUserViewSet.as_view({'get': 'list'}), name="profilentrepriseuser"),
     path("postuleprojet/<project>/<user>/", PostuleProjetViewSet.as_view({'get': 'list'}), name="postuleprojetuser"),
     path("ajoutTprojet/<project>/<user>/", PostuleProjetViewSet.as_view({'get': 'list'}), name="postuleprojetuser"),
+    path("travailleurs/<project>/", TravailleursProjetViewSet.as_view({'get': 'list'}), name="travailleurs"),
     path("postuleprojet/<project>/", PostulatsProjetViewSet.as_view({'get': 'list'}), name="postuleprojet"),
     path("recommandeFreel/<id_project>/", RecommandeFreelancersViewSet.as_view({'get': 'list'}), name="recommandeFreel"),
     path("projetcreateur/<createur>/", ProjectCreateurViewSet.as_view({'get': 'list'}), name="projetcreateur"),

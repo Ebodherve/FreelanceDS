@@ -198,10 +198,16 @@ class PostulatsProjetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet)
 def model_distance(liste_projets, projetP, seuil=0.20):
     p = projetP
     pSelectsid = []
+    print("Error ------------------ 1")
+    print("Error ------------------ 2")
     
     for projet in liste_projets:
-        if modelML(projet.description, p.description) >= seuil:
+        print(projet.description)
+        print(p.description)
+        if len(projet.description)>0 and len(p.description)>0 and modelML(projet.description, p.description) >= seuil:
+            print("Error ------------------ 3")
             pSelectsid.append(projet.id)
+            print("Error ------------------ 4")
     
     return Project.objects.filter(pk__in = pSelectsid)
 
@@ -215,15 +221,22 @@ class RecommandeFreelancersViewSet(ListModelMixin, RetrieveModelMixin, GenericVi
     
     def list(self, request, *args, **kwargs):
         PSelect = Project.objects.filter(id = kwargs["id_project"])
+        print("--------------------------- 1")
         PListRecommands = model_distance(Project.objects.all(), PSelect.first())
-        usersSelect = PListRecommands.first().travailleurs.all()
-        for p in PListRecommands[:1]:
-            usersSelect.union(p.travailleurs.all())
-        user_ids = [u.id for u in usersSelect]
-        dataProfiles = Profile.objects.filter(user__in=user_ids)
-        data = self.serializer_class(dataProfiles, many=True).data
-        resp = JsonResponse(data=data, safe=False, status=200)
+        print("PListRecommands ----------")
+        print(len(PListRecommands))
+        if len(PListRecommands)>0 :
+            usersSelect = PListRecommands.first().travailleurs.all()
+            print("--------------------------- 2")
+            for p in PListRecommands[:1]:
+                usersSelect.union(p.travailleurs.all())
+            user_ids = [u.id for u in usersSelect]
+            dataProfiles = Profile.objects.filter(user__in=user_ids)
+            data = self.serializer_class(dataProfiles, many=True).data
+            resp = JsonResponse(data=data, safe=False, status=200)
+            return resp
         
+        resp = JsonResponse(data=[], safe=False, status=200)
         return resp
 
 
@@ -310,5 +323,28 @@ class MessageViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
     
     def get_queryset(self):
         return Message.objects.all()
+
+
+class TravailleursProjetViewSet(CreateModelMixin, DestroyModelMixin, ListModelMixin,
+                         UpdateModelMixin, RetrieveModelMixin,GenericViewSet):
+    serializer_class = ProfileSerializer
+    permission_classes = (AllowAny,)
+    
+    def get_queryset(self):
+        return Profile.objects.all()
+    
+    def get(self, request, projet):
+        P = Project.objects.filter(id=projet)
+        #if len(P) > 0:
+        if False:
+            P = P.first()
+            users = P.travailleurs.all()
+            profs = Profile.objects.filter(user__in=P.travailleurs.all())
+            data = self.serializer_class(profs, many=True).data
+            resp = JsonResponse(data, safe=False, status=200)
+            return resp
+        
+        resp = JsonResponse([], safe=False, status=200)
+        return resp
 
 

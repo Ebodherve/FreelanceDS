@@ -60,6 +60,8 @@ class ProjectsRequest {
       Uri.parse(Uri.encodeFull(url)),
     );
 
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       List data_json = jsonDecode(response.body);
       List data = [];

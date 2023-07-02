@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/pages/dashboard.dart';
+import 'package:front/pages/addCompetences.dart';
 import 'package:front/pages/update_image.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
@@ -31,6 +32,14 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
 
   @override
   Widget build(BuildContext context) {
+    print("widget.expert.competences --------");
+    print("widget.expert.competences --------");
+    print(widget.expert.competences);
+    print("widget.expert.competences --------");
+    print("widget.expert.competences --------");
+    titre_ = widget.expert.titre;
+    description_ = widget.expert.description;
+    prix_par_heure_ = widget.expert.prix_par_heure;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
@@ -42,7 +51,7 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
             children: <Widget>[
               Container(
                 color: const Color(0xfffcfcfb),
-                height: 60.0,
+                height: MediaQuery.of(context).size.height * 0.35,
                 alignment: Alignment.center,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -68,21 +77,25 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UpdateImagePage(),
+                              builder: (context) => UpdateImagePage(
+                                data: widget.expert,
+                                defaultIm: widget.expert.image != null &&
+                                        widget.expert.image != ""
+                                    ? const_base_urlIm +
+                                        '${widget.expert.image}'
+                                    : "",
+                              ),
                             ),
                           );
                         },
                         child: Text("Photo de profile"),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
                     ]),
               ),
               SizedBox(
-                height: 25.0,
+                height: 10.0,
               ),
-              const Divider(height: 25.0),
+              const Divider(height: 10.0),
               Form(
                 key: formKey,
                 child: Column(
@@ -146,9 +159,31 @@ class _ModifProfilPage extends State<ModifProfilPage> with RegisterAuth {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
               MaterialButton(
                 onPressed: () {
-                  register();
+                  print("widget.expert.competences ----");
+                  print(widget.expert.competences);
+                  print("widget.expert.competences ----");
+                  if (My_competentcesid.isEmpty) {
+                    widget.expert.competences.forEach((element) {
+                      My_competentcesid.add(
+                        element,
+                      );
+                    });
+                  }
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AjoutCompetencePage(
+                        competences: widget.expert.competences,
+                        expert: widget.expert,
+                      ),
+                    ),
+                  );
                 },
                 child: Text("ajouter des competences"),
               )

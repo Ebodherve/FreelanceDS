@@ -32,6 +32,7 @@ class _ModifProfileWidget extends State<ModifProfileWidget> {
         ),
         onTap: () {
           ProfilRequest.GetExpertProfil(userid: USER_ID).then((value) {
+            print(value);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -145,6 +146,7 @@ class _PortfolioWidget extends State<PortfolioWidget> {
         ),
         onTap: () {
           ProfilRequest.GetExpertProfil(userid: USER_ID).then((value) {
+            print(value.competences);
             Navigator.push(
                 context,
                 MaterialPageRoute(

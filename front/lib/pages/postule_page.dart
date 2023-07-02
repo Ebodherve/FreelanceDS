@@ -29,6 +29,8 @@ class _PostuleProjetPage extends State<PostuleProjetPage> with RegisterAuth {
 
   @override
   Widget build(BuildContext context) {
+    text_ = widget.text;
+    somme_ = widget.somme;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 3, 196, 9),

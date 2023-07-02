@@ -16,10 +16,15 @@ class LoadDataSiteRequest {
     if (response.statusCode == 200) {
       List data_json = jsonDecode(response.body);
       Liste_competentces.clear();
+      competentces_id.clear();
       data_json.forEach((element) {
-        Liste_competentces.add(
+        CompetentcesMAP[element["id"]] = element["nom"];
+        competentces_id.add(element["id"]);
+        print("${element['id']} - ${element['nom']}");
+
+        /*Liste_competentces.add(
           Competence(id: element["id"], name: element["nom"]),
-        );
+        );*/
       });
 
       return true;

@@ -26,6 +26,10 @@ class ProfilRequest {
       USER_PROFILE_ID = jsonExpert["id"];
       AdCardDataExpert expert;
 
+      print("jsonDecode(response.body)");
+      print(jsonDecode(response.body));
+      print("jsonDecode(response.body)");
+
       if (Imprecision) {
         expert = AdCardDataExpert.fromJson(
           json: jsonDecode(response.body),
@@ -107,6 +111,38 @@ class ProfilRequest {
     }
   }
 
+  static Future UpdateCompProfil({competences, profileid}) async {
+    String base_url = const_base_url;
+    String url = base_url + 'profile/' + '$profileid/';
+    List competencesL = [];
+    competences.forEach((element) {
+      competencesL.add(element);
+    });
+
+    print("PUT competence .....");
+    print(competencesL);
+    print("PUT competence .....");
+
+    http.Response response = await http.put(
+      Uri.parse(Uri.encodeFull(url)),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "competences": competencesL,
+      }),
+    );
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      //return jsonDecode(response.body);
+      return true;
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
   static Future UpdateEntrepriseProfil({entreprise, profileid}) async {
     String base_url = const_base_url;
     String url = base_url + 'profilentreprise/' + '$profileid/';
@@ -171,6 +207,10 @@ class ProfilRequest {
 
     http.Response response = await http.Response.fromStream(Sresponse);
 
+    print("response.body ---------");
+    print(response.body);
+    print("response.body ---------");
+
     if (response.statusCode == 200) {
       //return jsonDecode(response.body);
       return true;
@@ -211,6 +251,33 @@ class ProfilRequest {
       return true;
     } else {
       return false;
+    }
+  }
+
+  static Future GetTravailleursProject({projectid}) async {
+    String base_url = const_base_url;
+    int id = projectid != null ? projectid : USER_PROFILE_ID;
+    String url = base_url + 'travailleurs/' + '$id/';
+
+    http.Response response = await http.get(
+      Uri.parse(Uri.encodeFull(url)),
+    );
+
+    if (response.statusCode == 200) {
+      List jsonExperts = jsonDecode(response.body);
+      List list_experts = [];
+
+      jsonExperts.forEach(
+        (element) {
+          list_experts.add(
+            AdCardDataExpert.fromJson(json: element),
+          );
+        },
+      );
+
+      return list_experts;
+    } else {
+      throw Exception('Failed to create album.');
     }
   }
 

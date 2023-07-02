@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front/api_rest/projects_rest.dart';
-import 'package:front/pages/dashboard.dart';
+import 'package:front/api_rest/postulat_rest.dart';
+import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/pages/experts_recommande.dart';
-import 'package:front/pages/update_projets.dart';
+import 'package:front/pages/postulats_VE.dart';
+import 'package:front/pages/experts.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/constants.dart';
 
@@ -101,6 +103,18 @@ class _CreationProjectsPage extends State<CreationProjectsPage>
                             ),
                           ),
                           RecommandeProfileWidget(
+                            id_project: widget.project.id,
+                            updatefunct: () {
+                              register();
+                            },
+                          ),
+                          PostulatProjetWidget(
+                            id_project: widget.project.id,
+                            updatefunct: () {
+                              register();
+                            },
+                          ),
+                          TravailleursProjetWidget(
                             id_project: widget.project.id,
                             updatefunct: () {
                               register();
@@ -252,14 +266,62 @@ class _PostulatProjetWidget extends State<PostulatProjetWidget> {
         child: Text(widget.name),
         onPressed: () {
           widget.updatefunct();
-          ProjectsRequest.GetProfilesProjectRecomand(
-            id__project: widget.id_project,
+          PostulatRequest.GetPostulatsProject(
+            project: widget.id_project,
           ).then(
             (value) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ExpertsRecommandPage(data: value),
+                  //builder: (context) => ExpertsRecommandPage(data: value),
+                  builder: (context) => PostulatsVEPage(
+                    data: value,
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TravailleursProjetWidget extends StatefulWidget {
+  TravailleursProjetWidget({
+    String this.name = "Vos travailleurs pour ce projet",
+    int this.id_project = 0,
+    required this.updatefunct,
+  });
+
+  final name;
+  final id_project;
+  VoidCallback updatefunct;
+
+  @override
+  _TravailleursProjetWidget createState() => _TravailleursProjetWidget();
+}
+
+class _TravailleursProjetWidget extends State<TravailleursProjetWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: MaterialButton(
+        child: Text(widget.name),
+        onPressed: () {
+          widget.updatefunct();
+          ProfilRequest.GetTravailleursProject(
+            projectid: widget.id_project,
+          ).then(
+            (value) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpertsPage(
+                    data: value,
+                    titre: "LISTE DE VOS TRAVAILLEURS SUR CE PROJET",
+                  ),
                 ),
               );
             },

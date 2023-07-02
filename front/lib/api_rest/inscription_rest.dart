@@ -55,6 +55,8 @@ class InscriptionUser {
     int statuscode = response.statusCode;
     var responseJson = jsonDecode(response.body);
 
+    print(response.body);
+
     if (statuscode == 201) {
       // Si le serveur retourne 201, l'inscription s'est bien passée
       // Creation d'un profile vide

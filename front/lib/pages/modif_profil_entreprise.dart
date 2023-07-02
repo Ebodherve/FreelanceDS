@@ -32,6 +32,8 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
   Widget build(BuildContext context) {
     imagePorf =
         widget.entreprise.image == null ? "" : "${widget.entreprise.image}";
+    nom_ = widget.entreprise.nom;
+    description_ = widget.entreprise.description;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 3, 196, 9),
@@ -43,38 +45,51 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
             children: <Widget>[
               Container(
                 color: const Color(0xfffcfcfb),
-                height: 60.0,
+                //color: Colors.red,
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.center,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Placeholder(
-                    fallbackHeight: MediaQuery.of(context).size.height * 0.4,
-                    child: widget.entreprise.image != ""
-                        ? Image.network(
-                            const_base_urlIm + '${widget.entreprise.image}')
-                        : Image.asset(
-                            "assets/images/default_profile.png",
-                          ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              UpdateImagePage(type_im: "entreprise"),
-                        ),
-                      );
-                    },
-                    child: Text("Logo"),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ]),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Placeholder(
+                        fallbackHeight:
+                            MediaQuery.of(context).size.height * 0.2,
+                        fallbackWidth: MediaQuery.of(context).size.width * 0.5,
+                        child: widget.entreprise.image != ""
+                            ? Image.network(
+                                const_base_urlIm + '${widget.entreprise.image}')
+                            : Image.asset(
+                                "assets/images/default_profile.png",
+                              ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateImagePage(
+                                type_im: "entreprise",
+                                defaultIm: widget.entreprise.image != ""
+                                    ? const_base_urlIm +
+                                        '${widget.entreprise.image}'
+                                    : "",
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text("Logo"),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ]),
               ),
               SizedBox(
                 height: 50,

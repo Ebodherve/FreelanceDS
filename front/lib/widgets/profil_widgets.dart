@@ -23,6 +23,11 @@ class ExpertsCardWidget extends StatefulWidget {
 class _ExpertsCardWidget extends State<ExpertsCardWidget> {
   @override
   Widget build(BuildContext context) {
+    print("widget.dataObject.competences.length  ----");
+    print(widget.dataObject.competences.length);
+    print(widget.dataObject.competences);
+    print("widget.dataObject.competences.length  ----");
+
     return GestureDetector(
       child: Container(
         color: Colors.grey[300],
@@ -76,18 +81,21 @@ class _ExpertsCardWidget extends State<ExpertsCardWidget> {
                         SizedBox(
                           height: 20,
                         ),
-                        Wrap(
+                        Column(
                           children: List.generate(
-                            widget.dataObject.competences.length,
-                            (index) => Padding(
+                              widget.dataObject.competences.length, (index) {
+                            return Padding(
                               padding: EdgeInsets.all(2),
-                              child: Text(
-                                widget.dataObject.competences[index],
-                                style:
-                                    TextStyle(fontSize: 5, color: Colors.pink),
+                              child: Chip(
+                                label: Text(
+                                  CompetentcesMAP[
+                                      widget.dataObject.competences[index]],
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.pink),
+                                ),
                               ),
-                            ),
-                          ).toList().cast<Widget>(),
+                            );
+                          }).toList().cast<Widget>(),
                         ),
                         Text(
                           "${widget.dataObject.prix_par_heure}" + "\$/heure",

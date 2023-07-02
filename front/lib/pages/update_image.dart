@@ -11,10 +11,12 @@ class UpdateImagePage extends StatefulWidget {
     super.key,
     this.data,
     String this.type_im = "expert",
+    String this.defaultIm = "",
   });
 
   final data;
   String type_im;
+  String defaultIm;
 
   @override
   _UpdateImagePage createState() => _UpdateImagePage();
@@ -46,7 +48,13 @@ class _UpdateImagePage extends State<UpdateImagePage> with RegisterAuth {
         child: Column(children: [
           _image != null
               ? Image.file(_image, width: 250, height: 250, fit: BoxFit.cover)
-              : Image.asset("assets/images/default_profile.png"),
+              : (widget.defaultIm == ""
+                  ? Image.asset("assets/images/default_profile.png")
+                  : Image.network(
+                      widget.defaultIm,
+                      width: 250,
+                      height: 250,
+                    )),
           Padding(
             padding: EdgeInsets.all(10),
             child: CustomButton(
@@ -99,8 +107,19 @@ class _UpdateImagePage extends State<UpdateImagePage> with RegisterAuth {
     if (true) {
       if (_image != null) {
         if (widget.type_im == "expert") {
+          print("Expert Image .....");
           ProfilRequest.UpdateExpertImProfil(
               file: _image, profileid: USER_PROFILE_ID);
+          if (My_competentcesid != []) {
+            ProfilRequest.UpdateCompProfil(
+                competences: My_competentcesid, profileid: USER_PROFILE_ID);
+          } else {
+            if (widget.data != null) {
+              ProfilRequest.UpdateCompProfil(
+                  competences: widget.data.competences,
+                  profileid: USER_PROFILE_ID);
+            }
+          }
         } else if (widget.type_im == "entreprise") {
           print("Profile Entreprise --------");
           print("Profile Entreprise --------");

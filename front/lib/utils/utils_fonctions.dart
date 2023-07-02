@@ -5,9 +5,7 @@ List<String> get_list_competences({list_id}) {
   List l_id = list_id;
   l_id.forEach((id) {
     Liste_competentces.forEach((element) {
-      if (element.id == id) {
-        liste_competences.add(element.get_name());
-      }
+      liste_competences.add(CompetentcesMAP[id]);
     });
   });
 

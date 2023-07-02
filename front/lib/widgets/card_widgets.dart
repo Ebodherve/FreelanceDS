@@ -37,11 +37,17 @@ class AdCardDataExpert {
     json = null,
     String Imbase = "",
   }) {
-    List<String> liste_competences = [];
+    List liste_competencesid = [];
     List data_competences = json['competences'] ?? [];
-    data_competences = get_list_competences(list_id: data_competences);
+
     data_competences.forEach((element) {
-      liste_competences.add(element);
+      print("element -----");
+      print("element -----");
+      print(element);
+      print("element -----");
+      print("element -----");
+      liste_competencesid.add(element);
+      //liste_competencesid.add(CompetentcesMAP[element]);
     });
 
     String im = json['image'] != null && json['image'] != ""
@@ -55,7 +61,7 @@ class AdCardDataExpert {
       description: json['description'] ?? '',
       nb_etoiles: json['nb_etoiles'] ?? '',
       prix_par_heure: json['prix_par_heure'] ?? 0,
-      competences: liste_competences,
+      competences: liste_competencesid,
     );
   }
 
@@ -587,11 +593,15 @@ class _PostulatCardWidget extends State<PostulatCardWidget> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.dataObject.text,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.0,
+                        Padding(
+                          //padding: Edgeinsets.all(5),
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            widget.dataObject.text,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                            ),
                           ),
                         ),
                         SizedBox(
