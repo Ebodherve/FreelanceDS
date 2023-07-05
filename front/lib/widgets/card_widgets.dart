@@ -75,6 +75,39 @@ class AdCardDataExpert {
   }
 }
 
+class AdCardDataComment {
+  final int id;
+  final int emetteur;
+  final int destinataire;
+  final String text;
+
+  AdCardDataComment({
+    this.id = 0,
+    this.emetteur = 0,
+    this.destinataire = 0,
+    this.text = '',
+  });
+
+  factory AdCardDataComment.fromJson({
+    json = null,
+  }) {
+    return AdCardDataComment(
+      id: json["id"] ?? 0,
+      emetteur: json["emetteur"] ?? 0,
+      destinataire: json["destinataire"] ?? 0,
+      text: json["text"] ?? "",
+    );
+  }
+
+  @override
+  String toString() {
+    return "{id: $id \n"
+        "emetteur: $emetteur \n"
+        "destinataire: $destinataire \n"
+        "text: $text \n";
+  }
+}
+
 class AdCardDataEnterprise {
   final int id;
   final String description;
@@ -633,6 +666,7 @@ class _PostulatCardWidget extends State<PostulatCardWidget> {
                                       travailleur: widget.dataObject.user)
                                   .then(
                                 (value) {
+                                  Navigator.pop(context);
                                   //Navigator.push(context, MaterialPageRoute(builder: (context)=>),);
                                 },
                               );

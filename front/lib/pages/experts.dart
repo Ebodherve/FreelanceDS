@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:front/widgets/navbar_widgets.dart';
-import 'package:front/widgets/card_widgets.dart';
+/*import 'package:front/widgets/navbar_widgets.dart';
+import 'package:front/widgets/card_widgets.dart';*/
 import 'package:front/widgets/profil_widgets.dart';
 
 class ExpertsPage extends StatefulWidget {
@@ -20,6 +20,7 @@ class ExpertsPage extends StatefulWidget {
 class _ExpertsPage extends State<ExpertsPage> {
   @override
   Widget build(BuildContext context) {
+    /*
     print("widget.data.length --------");
     print("widget.data.length --------");
     print(widget.data.length);
@@ -27,6 +28,7 @@ class _ExpertsPage extends State<ExpertsPage> {
     print(widget.data.length);
     print("widget.data.length --------");
     print("widget.data.length --------");
+    */
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text(widget.titre)),

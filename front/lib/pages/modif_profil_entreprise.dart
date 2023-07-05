@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/api_rest/profil_rest.dart';
 import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/pages/my_projects.dart';
-import 'package:front/pages/dashboard.dart';
+//import 'package:front/pages/dashboard.dart';
 import 'package:front/pages/update_projets.dart';
 import 'package:front/pages/update_image.dart';
 import 'package:front/widgets/card_widgets.dart';

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin, ListModelMixin, 
-                                   UpdateModelMixin, RetrieveModelMixin) 
+                                   UpdateModelMixin, RetrieveModelMixin)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -132,6 +132,11 @@ class TravailleursProjectViewSet(ListModelMixin, RetrieveModelMixin, GenericView
         print(project)
         if project.exists():
             project = project.first()
+            print("------------- project.travailleurs.all()")
+            print("------------- project.travailleurs.all()")
+            print(project.travailleurs.all())
+            print("------------- project.travailleurs.all()")
+            print("------------- project.travailleurs.all()")
             project_user = self.serializer_class(Profile.objects.filter(user__in = project.travailleurs.all()), many=True).data
             print(project_user)
             rep = JsonResponse(project_user, safe=False, status=200)
@@ -333,12 +338,12 @@ class TravailleursProjetViewSet(CreateModelMixin, DestroyModelMixin, ListModelMi
     def get_queryset(self):
         return Profile.objects.all()
     
-    def get(self, request, projet):
-        P = Project.objects.filter(id=projet)
-        #if len(P) > 0:
-        if False:
+    def get(self, request, *args, **kwargs):
+        P = Project.objects.filter(id=kwargs["projet"])
+        if len(P) > 0:
             P = P.first()
-            users = P.travailleurs.all()
+            #users = P.travailleurs.all()
+            print(P.travailleurs.all())
             profs = Profile.objects.filter(user__in=P.travailleurs.all())
             data = self.serializer_class(profs, many=True).data
             resp = JsonResponse(data, safe=False, status=200)
@@ -346,5 +351,83 @@ class TravailleursProjetViewSet(CreateModelMixin, DestroyModelMixin, ListModelMi
         
         resp = JsonResponse([], safe=False, status=200)
         return resp
+
+
+class AddProjectWorkerViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = Project
+    permission_classes = (AllowAny,)
+    
+    def get_queryset(self):
+        return Profile.objects.all()
+    
+    def get(self, request, *args, **kwargs):
+        idproj = kwargs["projet"]
+        idwork = kwargs["travailleur"]
+        project1 = Project.objects.filter(id=idproj)
+        tv = User(id=idwork)
+        if project1.exists():
+            project1 = project1.first()
+            if tv.exists():
+                tv = tv.first()
+                project1.travailleurs.add(tv)
+                projectData = self.serializer_class(project1).data
+            return JsonResponse(projectData, safe=False, status=200)
+        
+        return JsonResponse("Ajout non effectué", safe=False, status=200)
+
+
+class CommentEnvoieViewSet(CreateModelMixin, GenericViewSet):
+    serializer_class = CommentaireSerializer
+    permission_classes = (AllowAny,)
+    
+    def get_queryset(self):
+        return Commentaire.objects.all()
+    
+    def create(self, request, *args, **kwargs):
+        idEmetteur = self.request.data['emetteur']
+        idDestinataire = self.request.data['destinataire']
+        text = self.request.data["text"]
+        user_emetteur = User.objects.filter(id=idEmetteur)
+        destinataireS = Profile.objects.filter(id=idDestinataire)
+        print(self.request.data)
+        if user_emetteur.exists() and destinataireS.exists():
+            destinataireS = destinataireS.first()
+            print("destinataireS.user ----------")
+            print(destinataireS.user)
+            print("destinataireS.user ----------")
+            user_destinataire = destinataireS.user
+            
+            cm = Commentaire()
+            cm.emetteur = user_destinataire
+            cm.destinataire = user_destinataire
+            cm.text = text
+            cm.save()
+            dataRet = self.serializer_class(cm).data
+            
+            return JsonResponse(dataRet, safe=True, status=201)
+            
+        return JsonResponse("Erreur lors de la creation", safe=True, status=404)
+
+
+class CommentGetViewSet(ListModelMixin, GenericViewSet):
+    serializer_class = CommentaireSerializer
+    permission_classes = (AllowAny,)
+    
+    def get_queryset(self):
+        return Commentaire.objects.all()
+    
+    def list(self, request, *args, **kwargs):
+        idProfile = kwargs['id']
+        profiles = Profile.objects.filter(id=idProfile)
+        if profiles.exists():
+            profiles = profiles.first()
+            comments = Commentaire.objects.filter(destinataire=profiles.user.id)
+            data_comments = self.serializer_class(comments, many=True).data
+            return JsonResponse(data_comments, safe=False, status=200)
+        
+        return JsonResponse("Erreur lors de la creation", safe=True, status=404)
+    
+    
+    
 
 

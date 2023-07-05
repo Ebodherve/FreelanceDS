@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:front/widgets/card_widgets.dart';
+//import 'package:front/widgets/card_widgets.dart';
 
 class ProjectsRequest {
   static Future GetAllProjects() async {
@@ -159,7 +159,7 @@ class ProjectsRequest {
 
   static Future AddTravailleur({projet, travailleur}) async {
     String url = const_base_url + 'acceptetravailleur/$projet/$travailleur/';
-    http.Response response = await http.post(
+    http.Response response = await http.get(
       Uri.parse(Uri.encodeFull(url)),
     );
 

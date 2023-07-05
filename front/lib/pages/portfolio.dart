@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
-import 'package:front/utils/utils_fonctions.dart';
+import 'package:front/pages/commentPage.dart';
+import 'package:front/api_rest/experts_rest.dart';
 import 'package:front/widgets/card_widgets.dart';
 
 class ExpertPortfolioPage extends StatefulWidget {
@@ -25,8 +26,12 @@ class _ExpertPortfolioPage extends State<ExpertPortfolioPage> {
   @override
   Widget build(BuildContext context) {
     print(widget.dataObject.competences);
+    ExpertsRequest.GetComment(destinataire: 1).then((value) {
+      print(value);
+    });
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 3, 196, 9),
         title: Center(
           child: Text(
             "PORTEFOLIO",
@@ -107,12 +112,40 @@ class _ExpertPortfolioPage extends State<ExpertPortfolioPage> {
           SizedBox(
             height: 20,
           ),
-          MaterialButton(
-              color: Colors.blueGrey,
-              child: Text("Engagez"),
-              onPressed: () {
-                print("Engager");
-              }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MaterialButton(
+                  color: Colors.blueGrey,
+                  child: Text("Engagez"),
+                  onPressed: () {
+                    print("Engager");
+                  }),
+              SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CommentPage(expertInfo: widget.dataObject),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.comment),
+              ),
+            ],
+          ),
+          /*Padding(
+            padding: EdgeInsets.all(10),
+            child: Wrap(
+              children: [
+
+              ],
+            ),
+          ),*/
         ],
       ),
     );

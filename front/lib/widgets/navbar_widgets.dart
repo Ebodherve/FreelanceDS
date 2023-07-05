@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:front/pages/experts.dart';
 import 'package:front/pages/projects.dart';
 import 'package:front/pages/enterprises.dart';
+/*
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/widgets/navbar_widgets.dart';
+*/
 import 'package:front/api_rest/projects_rest.dart';
 import 'package:front/api_rest/experts_rest.dart';
 

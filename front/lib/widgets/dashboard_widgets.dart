@@ -23,7 +23,7 @@ class _ModifProfileWidget extends State<ModifProfileWidget> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 0.70,
-          child: Container(
+          child: Card(
             color: Colors.grey,
             child: Center(
               child: Text("MODIFIER VOTRE PROFILE"),
@@ -106,7 +106,7 @@ class _ProjetPostulerWidget extends State<ProjetPostulerWidget> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 0.70,
-          child: Container(
+          child: Card(
             color: Colors.grey,
             child: Center(
               child: Text("Creer un projet"),
@@ -137,7 +137,7 @@ class _PortfolioWidget extends State<PortfolioWidget> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 0.70,
-          child: Container(
+          child: Card(
             color: Colors.grey,
             child: Center(
               child: Text("PORTFOLIO"),
@@ -179,7 +179,7 @@ class _ProjetsCoursWidget extends State<ProjetsCoursWidget> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 0.70,
-          child: Container(
+          child: Card(
             color: Colors.grey,
             child: Center(
               child: Text("PROJETS EN COUR"),
@@ -210,7 +210,7 @@ class _ProfileEntrepriseWidget extends State<ProfileEntrepriseWidget> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
           width: MediaQuery.of(context).size.width * 0.70,
-          child: Container(
+          child: Card(
             color: Colors.grey,
             child: Center(
               child: Text("DASHBOARD ENTREPRISE"),

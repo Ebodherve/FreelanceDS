@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/constants.dart';
-import 'package:front/utils/utils_fonctions.dart';
+//import 'package:front/utils/utils_fonctions.dart';
 import 'package:front/widgets/card_widgets.dart';
 import 'package:front/pages/portfolio.dart';
 
@@ -9,7 +9,7 @@ class ExpertsCardWidget extends StatefulWidget {
     Key? key,
     required this.dataObject,
     //this.searchObject,
-    //this.viewed = false
+    //this.viewed = false,
   }) : super(key: key);
 
   AdCardDataExpert dataObject;
@@ -177,13 +177,15 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
                         Row(
                           children: List.generate(
                             5,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 15.0,
-                              color: index >= widget.dataObject.nb_etoiles
-                                  ? Colors.grey
-                                  : Colors.orange,
-                            ),
+                            (index) {
+                              return Icon(
+                                Icons.star,
+                                size: 15.0,
+                                color: index >= widget.dataObject.nb_etoiles
+                                    ? Colors.grey
+                                    : Colors.orange,
+                              );
+                            },
                           ).toList().cast<Widget>(),
                         ),
                         SizedBox(
@@ -195,18 +197,19 @@ class _ExpertsCardRecommandeWidget extends State<ExpertsCardRecommandeWidget> {
                         ),
                         Wrap(
                           children: List.generate(
-                            widget.dataObject.competences.length,
-                            (index) => Padding(
+                              widget.dataObject.competences.length, (index) {
+                            return Padding(
                               padding: EdgeInsets.all(2),
                               child: Chip(
                                 label: Text(
-                                  widget.dataObject.competences[index],
+                                  CompetentcesMAP[
+                                      widget.dataObject.competences[index]],
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.pink),
                                 ),
                               ),
-                            ),
-                          ).toList().cast<Widget>(),
+                            );
+                          }).toList().cast<Widget>(),
                         ),
                         Text(
                           "${widget.dataObject.prix_par_heure}" + "\$/heure",

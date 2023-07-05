@@ -6,7 +6,7 @@ import 'package:front/pages/experts_recommande.dart';
 import 'package:front/pages/postulats_VE.dart';
 import 'package:front/pages/experts.dart';
 import 'package:front/widgets/card_widgets.dart';
-import 'package:front/constants.dart';
+//import 'package:front/constants.dart';
 
 class CreationProjectsPage extends StatefulWidget {
   //final expert;
@@ -290,6 +290,7 @@ class _PostulatProjetWidget extends State<PostulatProjetWidget> {
 class TravailleursProjetWidget extends StatefulWidget {
   TravailleursProjetWidget({
     String this.name = "Vos travailleurs pour ce projet",
+    //String this.name = "Vos travailleurs pour ce projet",
     int this.id_project = 0,
     required this.updatefunct,
   });

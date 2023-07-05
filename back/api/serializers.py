@@ -21,7 +21,6 @@ class UserLoginSerializer(ModelSerializer):
         fields = ("id", "username", "password")
 
 
-
 class DomaineSerializer(ModelSerializer):
     class Meta:
         model = Domaine
@@ -32,7 +31,6 @@ class CompetenceSerializer(ModelSerializer):
     class Meta:
         model = Competence
         fields = ('id', 'nom', 'domaine')
-
 
 
 class ProfileSerializer(ModelSerializer):
@@ -59,7 +57,7 @@ class ProjectSerializer(ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'titre', 'description', 'min_prix', 'max_prix', 'devise', 'createur', 'travailleurs', 'fini')
-    
+
 
 class PostulatSerializer(ModelSerializer):
     class Meta:
@@ -70,7 +68,7 @@ class PostulatSerializer(ModelSerializer):
 class CommentaireSerializer(ModelSerializer):
     class Meta:
         model = Commentaire
-        fields = ('id', 'text', 'emetteur', 'destinataire',)
+        fields = ('id', 'text', 'emetteur', 'destinataire')
 
 
 class MessageSerializer(ModelSerializer):
