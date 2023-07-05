@@ -57,7 +57,7 @@ class _ModifProfilEPage extends State<ModifProfilEPage> with RegisterAuth {
                       ),
                       Placeholder(
                         fallbackHeight:
-                            MediaQuery.of(context).size.height * 0.2,
+                            MediaQuery.of(context).size.height * 0.3,
                         fallbackWidth: MediaQuery.of(context).size.width * 0.5,
                         child: widget.entreprise.image != ""
                             ? Image.network(
