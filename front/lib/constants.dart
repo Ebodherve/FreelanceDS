@@ -33,8 +33,8 @@ class Devise {
   }
 }
 
-//String const_base_url = "http://127.0.0.1:8000/";
-//String const_base_urlIm = "http://127.0.0.1:8000";
+String const_base_url = "http://127.0.0.1:8000/";
+String const_base_urlIm = "http://127.0.0.1:8000";
 
-String const_base_url = "https://freelanceapi-oclu.onrender.com/";
-String const_base_urlIm = "https://freelanceapi-oclu.onrender.com";
+//String const_base_url = "https://freelanceapi-oclu.onrender.com/";
+//String const_base_urlIm = "https://freelanceapi-oclu.onrender.com";

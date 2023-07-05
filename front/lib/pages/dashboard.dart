@@ -46,7 +46,7 @@ class _DashboardPage extends State<DashboardPage> {
                 height: 50,
               ),
               ProfileEntrepriseWidget(),
-              //ProjetsCoursWidget(),
+              ProjetsCoursWidget(),
               PortfolioWidget(),
               ModifProfileWidget(),
             ],

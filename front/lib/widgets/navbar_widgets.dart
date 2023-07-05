@@ -69,12 +69,14 @@ class _DrawerNavWidget extends State<DrawerNavWidget> {
           child: Text("Entete"),
           decoration: BoxDecoration(color: Color.fromARGB(255, 3, 196, 9)),
         ),
+        /*
         ListTile(
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => EnterprisesPage()));
             },
             title: Text("ENTREPRISES")),
+            */
         ListTile(
             onTap: () {
               getExpertsFromApi();

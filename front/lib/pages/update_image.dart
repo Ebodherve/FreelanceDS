@@ -40,6 +40,7 @@ class _UpdateImagePage extends State<UpdateImagePage> with RegisterAuth {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 3, 196, 9),
         title: Center(
           child: Text("Choisissez une image "),
         ),
@@ -150,6 +151,7 @@ Widget CustomButton({
   required VoidCallback onClick,
 }) {
   return Container(
+    color: Color.fromARGB(255, 3, 196, 9),
     width: 280,
     child: ElevatedButton(
       onPressed: onClick,

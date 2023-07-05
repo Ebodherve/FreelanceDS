@@ -186,7 +186,10 @@ class _ProjetsCoursWidget extends State<ProjetsCoursWidget> {
             ),
           ),
         ),
-        onTap: () {},
+        onTap: () {
+          //Navigator.push(context, MaterialPageRoute(builder: (context)=>),);
+          print(" ---- ");
+        },
       ),
     );
   }
